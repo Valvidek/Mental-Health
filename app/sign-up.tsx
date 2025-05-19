@@ -23,7 +23,6 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     setError(null);
-
     if (!name || !email || !password) {
       setError('Please fill out all fields');
       return;
@@ -91,7 +90,6 @@ export default function SignUpScreen() {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          autoCorrect={false}
           leftIcon={<Mail size={20} color={Colors.text.tertiary} />}
         />
 

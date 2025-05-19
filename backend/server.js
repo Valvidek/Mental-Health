@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
 const Todo = require('./models/Todo');
+const UserAnswer = require('./models/Answer');
+
 
 const app = express();
 
@@ -55,6 +57,7 @@ const MoodSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 const Mood = mongoose.model('Mood', MoodSchema);
+
 
 // Routes
 app.get('/', (req, res) => {
@@ -136,6 +139,34 @@ app.post('/todos', async (req, res) => {
   }
 });
 
+app.post('/answers', async (req, res) => {
+  try {
+    const { questionIndex, response, userId } = req.body;
+    if (questionIndex === undefined || response === undefined) {
+      return res.status(400).json({ error: 'questionIndex болон response шаардлагатай.' });
+    }
+
+    const newAnswer = new Answer({ questionIndex, response, userId });
+    await newAnswer.save();
+
+    res.status(201).json({ message: 'Хариулт хадгалагдлаа', answer: newAnswer });
+  } catch (error) {
+    console.error('Answer хадгалах алдаа:', error);
+    res.status(500).json({ error: 'Серверийн алдаа' });
+  }
+});
+
+// Хэрэглэгчийн бүх хариултуудыг авах GET маршрут
+app.get('/answers/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const answers = await Answer.find({ userId }).sort({ createdAt: -1 });
+    res.json(answers);
+  } catch (error) {
+    console.error('Answer авах алдаа:', error);
+    res.status(500).json({ error: 'Серверийн алдаа' });
+  }
+});
 // POST: Mood хадгалах
 // app.post('/moods', async (req, res) => {
 //   try {

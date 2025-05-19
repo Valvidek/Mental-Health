@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import Colors from '@/constants/Colors';
 
-const UserProfileScreen: React.FC = () => {
+const AccountScreen: React.FC = () => {
   const router = useRouter();
 
   return (
@@ -16,7 +17,7 @@ const UserProfileScreen: React.FC = () => {
         </View>
         {/* User info */}
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>User Name</Text>
+          <Text style={styles.userName}>Mentos</Text>
           <Text style={styles.userDetails}>March 1, 2006</Text>
         </View>
       </View>
@@ -66,18 +67,22 @@ const UserProfileScreen: React.FC = () => {
   );
 };
 
+export default AccountScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.primary,
   },
   contentContainer: {
-    padding: 20,
+    padding: 25,
+    paddingBottom: 100,
+    
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   avatarContainer: {
     marginRight: 16,
@@ -86,7 +91,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#FFA500', // Orange, or replace with your avatar image
+    backgroundColor: Colors.primary.default,
   },
   userInfo: {
     flex: 1,
@@ -94,17 +99,17 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: Colors.text.primary,
   },
   userDetails: {
     fontSize: 14,
-    color: '#555',
+    color: Colors.text.secondary,
     marginTop: 4,
   },
   statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 20,
+    justifyContent: 'space-between',
+    marginVertical: 24,
   },
   statBox: {
     alignItems: 'center',
@@ -113,29 +118,30 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#222',
+    color: Colors.text.primary,
   },
   statLabel: {
     marginTop: 4,
     fontSize: 12,
-    color: '#555',
+    color: Colors.text.tertiary,
   },
   section: {
-    marginVertical: 20,
+    marginTop: 24,
+    marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     marginBottom: 10,
-    color: '#222',
+    color: Colors.text.primary,
   },
   aboutMeText: {
     fontSize: 14,
-    color: '#444',
+    color: Colors.text.secondary,
     lineHeight: 20,
   },
   achievementsContainer: {
-    marginVertical: 20,
+    marginTop: 24,
   },
   achievementCards: {
     flexDirection: 'row',
@@ -149,13 +155,18 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#E0E0E0', // Placeholder, replace with badge image background if needed
+    backgroundColor: Colors.background.secondary,
     marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   badgeText: {
     fontSize: 14,
     fontWeight: '500',
     textAlign: 'center',
-    color: '#222',
+    color: Colors.text.primary,
   },
 });

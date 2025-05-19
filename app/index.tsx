@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
             style={styles.image}
           />
           <View style={styles.buttonContainer}>
-            <Link href="/sign-up" asChild>
+            <Link href="/sign-in" asChild>
               <Button 
                 title="Sign-In" 
                 variant="ghost"
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background.primary, // changed from primary
+    paddingTop: 150,
   },
   content: {
     flex: 1,

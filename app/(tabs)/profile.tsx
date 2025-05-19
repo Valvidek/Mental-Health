@@ -45,7 +45,7 @@ export default function ProfileScreen() {
         <View style={styles.userCard}>
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
-            <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/user')}>
+            <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/Account')}>
               <TextCaption style={styles.username}>User</TextCaption>
               <TextCaption>ID: 154654254545</TextCaption>
             </TouchableOpacity>

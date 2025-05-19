@@ -99,7 +99,7 @@ export default function SignInScreen() {
 
         <View style={styles.footer}>
           <TextBody>Don't have an account? </TextBody>
-          <Link href="../sign-in" asChild>
+          <Link href="../sign-up" asChild>
             <TouchableOpacity>
               <TextBody style={styles.link}>Sign Up</TextBody>
             </TouchableOpacity>
