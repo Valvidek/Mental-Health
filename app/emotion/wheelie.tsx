@@ -39,8 +39,9 @@ const EmotionWheel = () => {
   };
 
   const handleNavigate = () => {
-    router.push('/emotion/sleep');
-  };
+  router.push(`/emotion/sleep?mood=${selectedMood.id}`);
+};
+
 
   return (
     <View style={[styles.container, { backgroundColor: selectedMood.color }]}>

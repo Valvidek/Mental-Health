@@ -167,6 +167,7 @@ app.get('/answers/:userId', async (req, res) => {
     res.status(500).json({ error: 'Серверийн алдаа' });
   }
 });
+
 // POST: Mood хадгалах
 // app.post('/moods', async (req, res) => {
 //   try {

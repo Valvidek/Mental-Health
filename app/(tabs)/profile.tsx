@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { TextCaption, TextSubheading } from '@/components/StyledText';
+import { useEffect, useState } from 'react';
+
 import {
   ChevronRight,
   BookUser,
@@ -25,6 +27,26 @@ import Layout from '@/constants/Layout';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [userData, setUserData] = useState<{ id: string; name: string } | null>(null);
+    const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await fetch('http://192.168.88.92:5000/user/test@example.com');
+      const data = await response.json();
+      setUserData({ id: data.id, name: data.name });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchUser();
+}, []);
+
+
+
 
   const renderMenuItem = (icon: React.ReactNode, title: string, route?: string) => (
     <TouchableOpacity
@@ -46,8 +68,8 @@ export default function ProfileScreen() {
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
             <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/Account')}>
-              <TextCaption style={styles.username}>User</TextCaption>
-              <TextCaption>ID: 154654254545</TextCaption>
+              <TextCaption style={styles.username}>{userData?.name || 'N/A'}</TextCaption>
+              <TextCaption>ID: {userData?.id || 'Loading...'}</TextCaption>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => router.push('../profile/settings')}>

@@ -35,7 +35,7 @@ const MonthlyLogScreen = () => {
   useEffect(() => {
     const fetchMoods = async () => {
       try {
-        const response = await axios.get('http://YOUR_SERVER_URL/moods');
+        const response = await axios.get('http://192.168.88.207:5000/moods');
         setMoods(response.data);
       } catch (error) {
         console.error('Moods fetch error:', error);
