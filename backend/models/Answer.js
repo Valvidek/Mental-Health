@@ -1,24 +1,9 @@
 const mongoose = require('mongoose');
 
-const answerSchema = new mongoose.Schema({
-  questionIndex: {
-    type: Number,
-    required: true,
-  },
-  response: {
-    type: Number,
-    required: true,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // хүсвэл хэрэглэгчтэй холбож болно
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+const AnswerSchema = new mongoose.Schema({
+  questionIndex: Number,
+  response: String,
+  userId: String,
+}, { timestamps: true });
 
-const Answer = mongoose.model('Answer', answerSchema);
-
-module.exports = Answer;
+module.exports = mongoose.model('Answer', AnswerSchema);

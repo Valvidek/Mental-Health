@@ -8,7 +8,7 @@ import Button from '@/components/Button';
 import { useState } from 'react';
 import { Mail, Lock, ArrowLeft } from 'lucide-react-native';
 
-const LOCAL_IP = '192.168.88.92'; 
+const LOCAL_IP = '192.168.88.92';
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
@@ -30,7 +30,7 @@ export default function SignInScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${baseURL}/signin`, {
+      const response = await fetch(`${baseURL}/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,6 @@ export default function SignInScreen() {
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

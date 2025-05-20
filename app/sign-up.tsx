@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Mail, Lock, User, ArrowLeft } from 'lucide-react-native';
 import axios from 'axios';
 
-const LOCAL_IP = '192.168.88.92'; // 👈 Replace with your real IP
+const LOCAL_IP = '192.168.88.92'; 
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
@@ -23,6 +23,7 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     setError(null);
+
     if (!name || !email || !password) {
       setError('Please fill out all fields');
       return;
@@ -41,7 +42,7 @@ export default function SignUpScreen() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${baseURL}/signup`, {
+      const response = await axios.post(`${baseURL}/api/auth/signup`, {
         name,
         email,
         password,
