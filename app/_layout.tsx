@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts, PlusJakartaSans_400Regular, PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold } from '@expo-google-fonts/plus-jakarta-sans';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import { ThemeProvider } from './context/ThemeContext';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +27,11 @@ export default function RootLayout() {
   }
 
   return (
-    <>
-      <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar style="auto" />
-    </>
+    <ThemeProvider>
+      <>
+        <Stack screenOptions={{ headerShown: false }} />
+        <StatusBar style="auto" />
+      </>
+    </ThemeProvider>
   );
 }
