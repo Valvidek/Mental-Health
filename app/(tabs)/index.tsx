@@ -28,6 +28,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import StreakTracker from '../components/StreakTracker';
+import QuoteCard from '../components/QuoteCard';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -155,15 +156,10 @@ export default function HomeScreen() {
             <Text>How to set boundaries...</Text>
           </Box>
 
-          <View style={{ alignItems: 'center', marginTop: 20 }}>
-            <Box style={styles.wisdomBox}>
-              <Text style={styles.wisdomDate}>April 15</Text>
-              <Text style={styles.wisdomText}>
-                Don’t say yes to everything - you may be reaching the burnout.
-              </Text>
-              <Image source={require('@/assets/icons/crystal-ball1.png')} style={styles.magicBall} />
-            </Box>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <QuoteCard />
           </View>
+          
         </View>
       </ScrollView>
     </SafeAreaView>
