@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary, // changed from primary
+    // changed from primary
   },
   content: {
     flex: 1,
@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    color: Colors.text.primary,
+    
     fontSize: 36,
     marginBottom: Layout.spacing.sm,
     textAlign: 'center',
   },
   subtitle: {
-    color: Colors.text.secondary,
+    
     marginBottom: Layout.spacing.xl,
     textAlign: 'center',
   },
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: Layout.spacing.sm,
-    backgroundColor: Colors.background.secondary,
+    
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,

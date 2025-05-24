@@ -27,6 +27,8 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import StreakTracker from '../components/StreakTracker';
+import QuoteCard from '../components/QuoteCard';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -82,29 +84,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <TextTitle style={styles.title}>Week</TextTitle>
-          <View style={styles.flex}>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <Ionicons name="notifications" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <Box style={styles.moodTrackerSection}>
-          <FlatList
-            data={moods}
-            renderItem={renderMoodItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-          />
-        </Box>
+        <StreakTracker/>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -176,15 +156,10 @@ export default function HomeScreen() {
             <Text>How to set boundaries...</Text>
           </Box>
 
-          <View style={{ alignItems: 'center', marginTop: 20 }}>
-            <Box style={styles.wisdomBox}>
-              <Text style={styles.wisdomDate}>April 15</Text>
-              <Text style={styles.wisdomText}>
-                Don’t say yes to everything - you may be reaching the burnout.
-              </Text>
-              <Image source={require('@/assets/icons/crystal-ball1.png')} style={styles.magicBall} />
-            </Box>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <QuoteCard />
           </View>
+          
         </View>
       </ScrollView>
     </SafeAreaView>

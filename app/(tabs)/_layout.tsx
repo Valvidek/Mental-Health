@@ -72,13 +72,10 @@ const styles = StyleSheet.create({
   tabBar: {
   backgroundColor: 'white',
   height: 70,
-  paddingBottom: 5,
+  paddingBottom: 7,
   paddingTop: 10,
   borderRadius: 20,
   marginHorizontal: 10,
-  position: 'absolute',
-  left: 10,
-  right: 10,
   bottom: 10,
   // overflow: 'hidden',  <-- remove this line
   shadowColor: '#000',
