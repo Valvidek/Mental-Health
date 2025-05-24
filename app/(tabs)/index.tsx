@@ -27,6 +27,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import StreakTracker from '../components/StreakTracker';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -82,29 +83,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <TextTitle style={styles.title}>Week</TextTitle>
-          <View style={styles.flex}>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <Ionicons name="notifications" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <Box style={styles.moodTrackerSection}>
-          <FlatList
-            data={moods}
-            renderItem={renderMoodItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-          />
-        </Box>
+        <StreakTracker/>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>

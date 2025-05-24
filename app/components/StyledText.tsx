@@ -44,54 +44,53 @@ export function TextSmall(props: TextProps) {
 const styles = StyleSheet.create({
   regular: {
     fontFamily: 'PlusJakartaSans-Regular',
-    color: Colors.text.primary,
+
   },
   medium: {
     fontFamily: 'PlusJakartaSans-Medium',
-    color: Colors.text.primary,
+
   },
   semiBold: {
     fontFamily: 'PlusJakartaSans-SemiBold',
-    color: Colors.text.primary,
+
   },
   bold: {
     fontFamily: 'PlusJakartaSans-Bold',
-    color: Colors.text.primary,
+
   },
   title: {
     fontFamily: 'PlusJakartaSans-Bold',
     fontSize: 28,
     lineHeight: 34,
-    color: Colors.text.primary,
+
   },
   heading: {
     fontFamily: 'PlusJakartaSans-Bold',
     fontSize: 24,
     lineHeight: 29,
-    color: Colors.text.primary,
+
   },
   subheading: {
     fontFamily: 'PlusJakartaSans-SemiBold',
     fontSize: 20,
     lineHeight: 24,
-    color: Colors.text.primary,
+
   },
   body: {
     fontFamily: 'PlusJakartaSans-Regular',
     fontSize: 16,
     lineHeight: 24,
-    color: Colors.text.primary,
+
   },
   caption: {
     fontFamily: 'PlusJakartaSans-Medium',
     fontSize: 14,
-    lineHeight: 20,
-    color: Colors.text.secondary,
+
   },
   small: {
     fontFamily: 'PlusJakartaSans-Regular',
     fontSize: 12,
     lineHeight: 16,
-    color: Colors.text.tertiary,
+
   },
 });
