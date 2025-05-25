@@ -43,6 +43,7 @@ export default function TabLayout() {
         options={{
           title: '',
           tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }) => (
             <MaterialIcons name="space-dashboard" size={32} color={color} />
           ),
         }}
@@ -56,6 +57,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* aibuddy нь өөрийнхөө дотор дэлгэцүүдийг animation-тайгаар өөрчилнө */}
       <Tabs.Screen
         name="aibuddy"
         options={{
@@ -91,6 +93,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: '',
+          tabBarIcon: ({ color }) => (
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={32} color={color} />
           ),

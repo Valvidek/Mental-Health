@@ -7,11 +7,12 @@ import Input from '@/app/components/Input';
 import Button from '@/app/components/Button';
 import { useState } from 'react';
 import axios from 'axios';
+const LOCAL_IP = '10.0.4.143' 
 
-const LOCAL_IP = '192.168.88.92'; // 👈 Replace with your real IP
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
+
 
 export default function SignUpScreen() {
   const [name, setName] = useState('');
@@ -41,7 +42,7 @@ export default function SignUpScreen() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${baseURL}/signup`, {
+      const response = await axios.post(`${baseURL}/api/auth/signup`, {
         name,
         email,
         password,
@@ -51,8 +52,8 @@ export default function SignUpScreen() {
       Alert.alert('Success', 'Account created. Please sign in.');
       router.push('/sign-in');
     } catch (err: any) {
-      console.error('❌ Signup error:', err?.response?.data || err.message);
-      setError(err?.response?.data?.error || 'Signup failed. Please try again.');
+      console.error('❌ Signup error:', err?.response?.data ?? err.message);
+      setError(err?.response?.data?.error ?? 'Signup failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -64,7 +65,7 @@ export default function SignUpScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        
+        {/* Back button content if any */}
       </TouchableOpacity>
 
       <View style={styles.content}>

@@ -32,8 +32,7 @@ export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const bellScale = useSharedValue(1);
   const router = useRouter();
-  const { darkMode } = useThemeContext();
-  const themeColors = darkMode ? Colors.darkTheme : Colors.lightTheme;
+
   const LOCAL_IP = '192.168.88.92';
   const PORT = 5000;
 
@@ -44,7 +43,9 @@ export default function HomeScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mood }),
       });
-      await response.json();
+
+      const data = await response.json();
+      console.log('Mood saved:', data);
     } catch (error) {
       console.error('Failed to save mood:', error);
     }
@@ -92,74 +93,21 @@ export default function HomeScreen() {
             </View>
           </View>
 
-<Box
-  style={{
-    height: 70,
-    width: '100%',
-    backgroundColor: themeColors.background.secondary,
-    borderRadius: 10,
-    flexDirection: 'row',        // lay out children horizontally
-    alignItems: 'center',        // vertically center them
-    paddingHorizontal: 12,
-  }}
->
-  {/* Mood Icon */}
-  <TouchableOpacity
-    onPress={handleAddMood}
-    style={{ marginRight: 12 }}
-  >
-    <Image
-      source={require('@/assets/icons/happy1.png')}
-      style={{ width: 30, height: 30 }}
-    />
-  </TouchableOpacity>
-
-  {/* Date Bubble */}
-  <View
-    style={{
-      backgroundColor: themeColors.text.primary,
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      borderRadius: 6,
-      marginRight: 12,
-    }}
-  >
-    <Text style={{ color: themeColors.background.primary, fontSize: 12 }}>
-      15 Tue
-    </Text>
-  </View>
-
-  {/* Divider */}
-  <View
-    style={{
-      width: 2,
-      height: 30,
-      backgroundColor: themeColors.neutral[300],
-      marginRight: 12,
-    }}
-  />
-
-  {/* Input Field */}
-  <TextInput
-    placeholder="How do you feel today?"
-    placeholderTextColor={themeColors.text.tertiary}
-    style={{
-      flex: 1,
-      height: 36,
-      borderRadius: 6,
-      backgroundColor: themeColors.background.primary,
-      paddingHorizontal: 8,
-      fontSize: 14,
-      color: themeColors.text.primary,
-    }}
-  />
-
-  {/* Focus (Lotus) Icon */}
-  <Image
-    source={require('@/assets/icons/lotus1.png')}
-    style={{ width: 24, height: 24, marginLeft: 12 }}
-  />
-</Box>
+          <Box style={{ width: '100%', height: 90 }}>
+            <TouchableOpacity onPress={handleAddMood}>
+              <Image style={styles.icons} source={require('@/assets/icons/happy1.png')} />
+            </TouchableOpacity>
+            <View style={styles.dateContainer}>
+              <Text style={{ color: themes.light.box }}>15 Tue</Text>
+            </View>
+            <View style={styles.line} />
+            <TextInput
+              placeholder="How do you feel today?"
+              style={styles.TodayInput}
+              placeholderTextColor={themes.light.textSecondary}
+            />
+            <Image style={styles.focusIcon} source={require('@/assets/icons/lotus1.png')} />
+          </Box>
 
         </View>
 
@@ -230,18 +178,33 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  section: { paddingHorizontal: Layout.spacing.lg, marginBottom: Layout.spacing.lg },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  title: { fontSize: 18, fontWeight: '600', marginBottom: Layout.spacing.md },
-  iconRow: { flexDirection: 'row', gap: 16 },
-  iconButton: { padding: 6, borderRadius: 8 },
-  moodIcon: { position: 'absolute', width: 50, height: 50, top: -10, left: 20, zIndex: 1 },
-  dateContainer: { position: 'absolute', top: 45, left: 18, width: 55, height: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
-  line: { position: 'absolute', left: 43, top: 5, width: 4, height: 70, borderRadius: 10 },
-  textInput: { position: 'absolute', left: 100, top: 30, fontSize: 14, width: '60%' },
-  focusIcon: { position: 'absolute', height: 40, width: 40, top: 25, right: 20 },
-  affirmationInput: {
+  container: {
+    backgroundColor: themes.light.background,
+    flex: 1,
+  },
+  dateContainer: {
+    top: 45,
+    width: 55,
+    height: 20,
+    alignItems: 'center',
+    borderRadius: 10,
+    position: 'relative',
+    backgroundColor: themes.light.textPrimary,
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+    marginTop: 10,
+  },
+  focusIcon: {
+    height: 40,
+    width: 40,
+    position: 'absolute',
+    top: 25,
+    left: 310,
+  },
+  greatfulInput: {
     height: 50,
     width: '100%',
     borderRadius: 10,
@@ -251,5 +214,134 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
     elevation: 4,
   },
-  meditationRow: { flexDirection: 'row', gap: 20 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: Layout.spacing.lg,
+    paddingVertical: Layout.spacing.md,
+  },
+  iconButtons: {},
+  icons: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    top: -10,
+
+  },
+  line: {
+    width: 4,
+    height: 70,
+    backgroundColor: '#D4D3DF',
+    borderRadius: 10,
+    position: 'relative',
+    left: 70,
+    top: -25,
+  },
+  magicBall: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: 70,
+    left: 310,
+  },
+  meditation: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+  },
+  moodList: {
+    paddingVertical: Layout.spacing.md,
+  },
+  moodTrackerSection: {
+    width: 370,
+    height: 150,
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 10,
+  },
+  plusIcon: {
+    left: 120,
+    top: 60,
+    position: 'absolute',
+    borderRadius: 10,
+    padding: 5,
+    marginLeft: 20,
+  },
+  section: {
+    paddingHorizontal: Layout.spacing.lg,
+    marginBottom: Layout.spacing.lg,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Layout.spacing.md,
+  },
+  sectionTitle: {},
+  tips: {
+    height: 150,
+    width: '100%',
+  },
+  title: {
+    color: themes.light.textPrimary,
+    fontSize: 16,
+    marginTop: 10,
+  },
+  TodayInput: {
+    position: 'absolute',
+    fontSize: 13,
+    zIndex: 1,
+    left: 100,
+  },
+  toDoList: {
+    marginTop: 20,
+    height: 200,
+    width: '100%',
+  },
+  Todo: {
+    fontWeight: 'bold',
+    color: themes.light.textPrimary,
+  },
+  todaysMood: {
+    height: 80,
+    width: '100%',
+    backgroundColor: themes.light.box,
+    borderRadius: 10,
+    shadowColor: themes.light.textPrimary,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  trackButton: {
+    marginTop: Layout.spacing.md,
+  },
+  viewAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  viewAllText: {
+    marginRight: Layout.spacing.xs,
+  },
+  wisdomBox: {
+    height: 125,
+    width: 370,
+    backgroundColor: themes.light.textSecondary,
+  },
+  wisdomDate: {
+    color: themes.light.accent,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  wisdomText: {
+    width: 250,
+    color: themes.light.box,
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 10,
+  },
 });

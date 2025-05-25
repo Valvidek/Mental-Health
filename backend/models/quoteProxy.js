@@ -10,7 +10,7 @@ router.get('/quote', async (req, res) => {
         const data = await response.json();
         res.json(data);
     } catch (error) {
-        console.error('Fetch error:', error); // <<< Алдааг лог хийж шалгах
+        console.error('Fetch error:', error); 
         res.status(500).json({ message: 'Failed to fetch quote' });
     }
 });

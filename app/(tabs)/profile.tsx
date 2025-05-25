@@ -134,8 +134,7 @@ export default function ProfileScreen() {
           </View>
           <Image source={require('@/assets/images/mascot.png')} style={styles.mascotImage} />
         </TouchableOpacity>
-
-        {/* Menu Items */}
+{/* Menu Items */}
         {renderItem('Achievments', () => router.push('/'))}
 
         <TextCaption style={[styles.sectionLabel, { marginTop: 10, color: themeColors.text.secondary }]}>

@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Colors from '@/constants/Colors';
 
-// PNG image imports
 const focusOptions = [
   {
     title: 'Work',

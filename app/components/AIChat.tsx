@@ -24,7 +24,12 @@ interface Message {
 const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY!;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
+const prepareUserInput = (input: string) => {
+  return '* * * * *';
+};
+
 const sendToGemini = async (userInput: string) => {
+  const prompt = `Та зөвхөн сэтгэл зүйн зөвлөгөө өгнө үү. Хэрэглэгчийн асуулт: ${userInput}`;
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash',
     contents: userInput,
@@ -68,6 +73,7 @@ export default function AIChat() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
+    // Хэрэглэгчийн бичсэн мессежийг хадгалах
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -80,7 +86,12 @@ export default function AIChat() {
     setInput('');
 
     try {
-      const aiResponse = await sendToGemini(userMsg.text);
+      // Хэрэглэгчийн оролтыг *-аар солих жишээ
+      const preparedInput = prepareUserInput(userMsg.text);
+
+      // AI-с зөвлөгөө авах
+      const aiResponse = await sendToGemini(preparedInput);
+
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'model',

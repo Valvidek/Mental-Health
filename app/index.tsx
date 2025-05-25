@@ -1,9 +1,9 @@
 import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { TextTitle, TextBody } from '@/app/components/StyledText';
-import Colors from '@/constants/Colors';
-import Layout from '@/constants/Layout';
-import Button from '@/app/components/Button';
+import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
+import Button from '../app/components/Button';
 
 export default function WelcomeScreen() {
   return (
@@ -27,7 +27,6 @@ export default function WelcomeScreen() {
                 fullWidth
                 style={styles.button}
                 onPress={() => {
-                  // handle the button press here
                 }}
               />
             </Link>
@@ -39,7 +38,6 @@ export default function WelcomeScreen() {
                 fullWidth
                 style={styles.button}
                 onPress={() => {
-                  // handle the button press here
                 }}
               />
             </Link>
@@ -53,7 +51,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // changed from primary
+    backgroundColor: Colors.lightTheme.background.primary, // changed from primary
   },
   content: {
     flex: 1,

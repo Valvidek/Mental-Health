@@ -51,6 +51,10 @@ const Calendar = () => {
     <MoodCard image={item.image} count={item.count} />
   );
 
+  function rgba(arg0: number, arg1: number, arg2: number, $: any, arg4: { opacity: number; }): string {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.background.primary }]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
