@@ -77,24 +77,46 @@ export default function ProfileScreen() {
         <TextCaption style={[styles.sectionLabel, { color: themeColors.text.secondary }]}>
           Records
         </TextCaption>
-        <View style={styles.statsContainer}>
-          <Card style={styles.statCard}>
-            <TextSubheading style={[styles.statNumber, { color: themeColors.text.primary }]}>
-              8
-            </TextSubheading>
-            <TextCaption style={{ color: themeColors.text.secondary }}>
-              Recorded Days
-            </TextCaption>
-          </Card>
-          <Card style={styles.statCard}>
-            <TextSubheading style={[styles.statNumber, { color: themeColors.text.primary }]}>
-              185
-            </TextSubheading>
-            <TextCaption style={{ color: themeColors.text.secondary }}>
-              Points Collected
-            </TextCaption>
-          </Card>
-        </View>
+<View style={styles.statsContainer}>
+  <Card
+    style={{
+      ...styles.statCard,
+      backgroundColor: themeColors.background.secondary,
+    }}
+  >
+    <TextSubheading
+      style={{
+        ...styles.statNumber,
+        color: themeColors.text.primary,
+      }}
+    >
+      8
+    </TextSubheading>
+    <TextCaption style={{ color: themeColors.text.secondary }}>
+      Recorded Days
+    </TextCaption>
+  </Card>
+
+  <Card
+    style={{
+      ...styles.statCard,
+      backgroundColor: themeColors.background.secondary,
+    }}
+  >
+    <TextSubheading
+      style={{
+        ...styles.statNumber,
+        color: themeColors.text.primary,
+      }}
+    >
+      185
+    </TextSubheading>
+    <TextCaption style={{ color: themeColors.text.secondary }}>
+      Points Collected
+    </TextCaption>
+  </Card>
+</View>
+
 
         {/* Subscription */}
         <TextCaption style={[styles.sectionLabel, { color: themeColors.text.secondary }]}>
