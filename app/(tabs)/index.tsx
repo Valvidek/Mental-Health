@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   Image,
+  Alert,
 } from 'react-native';
 import { TextTitle } from '@/app/components/StyledText';
 import { useRouter } from 'expo-router';
@@ -19,23 +20,73 @@ import Layout from '@/constants/Layout';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MoodCard from '@/app/components/MoodCard';
 import MeditationCard from '@/app/components/MeditationCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@/app/components/Box';
 import { moods } from '@/assets/data/Data';
+import TherapistScreen from '../components/Therapists';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  withSequence,
+  withTiming,
 } from 'react-native-reanimated';
 import StreakTracker from '../components/StreakTracker';
 
+// Random wisdom quotes
+const wisdomQuotes = [
+  "Don't say yes to everything - you may be reaching the burnout.",
+  "The best time to plant a tree was 20 years ago. The second best time is now.",
+  "Progress, not perfection, is the goal.",
+  "Your mental health is a priority. Your happiness is essential.",
+  "It's okay to not be okay sometimes.",
+  "Small steps every day lead to big changes.",
+  "You are stronger than you think.",
+  "Breathe in peace, breathe out stress.",
+  "Self-care isn't selfish, it's necessary.",
+  "Every day is a new beginning.",
+];
+
+// Therapist data
+const therapists = [
+  { name: "Dr. Sarah Johnson", specialty: "Anxiety & Depression", rating: "4.9" },
+  { name: "Dr. Michael Chen", specialty: "Relationship Therapy", rating: "4.8" },
+  { name: "Dr. Emily Rodriguez", specialty: "Trauma Recovery", rating: "4.9" },
+  { name: "Dr. David Thompson", specialty: "Stress Management", rating: "4.7" },
+  { name: "Dr. Lisa Park", specialty: "Mindfulness Therapy", rating: "4.8" },
+];
+
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [currentQuote, setCurrentQuote] = useState(wisdomQuotes[0]);
+  const [currentDate, setCurrentDate] = useState('');
   const bellScale = useSharedValue(1);
+  const crystalBallScale = useSharedValue(1);
+  const crystalBallRotation = useSharedValue(0);
   const router = useRouter();
 
   const LOCAL_IP = '192.168.88.92';
   const PORT = 5000;
+
+  // Format current date
+  useEffect(() => {
+    const formatDate = () => {
+      const now = new Date();
+      const day = now.getDate();
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dayName = dayNames[now.getDay()];
+      return `${day} ${dayName}`;
+    };
+
+    setCurrentDate(formatDate());
+    
+    // Update date every minute
+    const interval = setInterval(() => {
+      setCurrentDate(formatDate());
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const saveMoodToDB = async (mood: string) => {
     try {
@@ -52,11 +103,33 @@ export default function HomeScreen() {
     }
   }
 
-
   const handlePressBell = () => {
     bellScale.value = withSpring(1.2, { damping: 4 }, () => {
       bellScale.value = withSpring(1);
     });
+  };
+
+  const handleCrystalBallPress = () => {
+    // Animate crystal ball
+    crystalBallScale.value = withSequence(
+      withSpring(1.2, { damping: 4 }),
+      withSpring(1)
+    );
+    
+    crystalBallRotation.value = withSequence(
+      withTiming(360, { duration: 800 }),
+      withTiming(0, { duration: 0 })
+    );
+
+    // Generate random quote
+    const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
+    setCurrentQuote(wisdomQuotes[randomIndex]);
+  };
+
+  const handleTherapistPress = () => {
+    handlePressBell();
+    router.push('/components/Therapists');
+
   };
 
   const handleAddMood = () => {
@@ -73,6 +146,15 @@ export default function HomeScreen() {
   const bellAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: bellScale.value }],
+    };
+  });
+
+  const crystalBallAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scale: crystalBallScale.value },
+        { rotate: `${crystalBallRotation.value}deg` }
+      ],
     };
   });
 
@@ -103,7 +185,7 @@ export default function HomeScreen() {
               <Image style={styles.icons} source={require('@/assets/icons/happy1.png')} />
             </TouchableOpacity>
             <View style={styles.dateContainer}>
-              <Text style={{ color: themes.light.box }}>15 Tue</Text>
+              <Text style={{ color: themes.light.box }}>{currentDate}</Text>
             </View>
             <View style={styles.line} />
             <TextInput
@@ -150,26 +232,44 @@ export default function HomeScreen() {
             </View>
           </ScrollView>
 
-          <TextTitle style={styles.title}>Quick Tips</TextTitle>
-          <Box style={styles.tips}>
-            <Text>How to set boundaries...</Text>
-          </Box>
+          <TextTitle style={styles.title}>Professional Help</TextTitle>
+          <TouchableOpacity onPress={handleTherapistPress}>
+            <Box style={styles.tips}>
+              <Text style={styles.therapistTitle}>Find a Therapist</Text>
+              <View style={styles.therapistPreview}>
+                <Text style={styles.therapistText}>
+                  • {therapists[0].name} - {therapists[0].specialty}
+                </Text>
+                <Text style={styles.therapistText}>
+                  • {therapists[1].name} - {therapists[1].specialty}
+                </Text>
+                <Text style={styles.therapistText}>
+                  • {therapists[2].name} - {therapists[2].specialty}
+                </Text>
+                <Text style={styles.viewMoreText}>Tap to view all therapists...</Text>
+              </View>
+            </Box>
+          </TouchableOpacity>
 
           <View style={{ alignItems: 'center', marginTop: 20 }}>
-            <Box style={styles.wisdomBox}>
-              <Text style={styles.wisdomDate}>April 15</Text>
-              <Text style={styles.wisdomText}>
-                Don’t say yes to everything - you may be reaching the burnout.
-              </Text>
-              <Image source={require('@/assets/icons/crystal-ball1.png')} style={styles.magicBall} />
-            </Box>
+            <TouchableOpacity onPress={handleCrystalBallPress}>
+              <Box style={styles.wisdomBox}>
+                <Text style={styles.wisdomDate}>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</Text>
+                <Text style={styles.wisdomText}>
+                  {currentQuote}
+                </Text>
+                <Animated.Image 
+                  source={require('@/assets/icons/crystal-ball1.png')} 
+                  style={[styles.magicBall, crystalBallAnimatedStyle]} 
+                />
+              </Box>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -227,7 +327,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     top: -10,
-
   },
   line: {
     width: 4,
@@ -241,9 +340,8 @@ const styles = StyleSheet.create({
   magicBall: {
     width: 50,
     height: 50,
-    position: 'absolute',
-    top: 70,
-    left: 310,
+    left: 260,
+    top: -20,
   },
   meditation: {
     display: 'flex',
@@ -279,9 +377,24 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.md,
   },
   sectionTitle: {},
+  therapistTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: themes.light.textPrimary,
+    marginBottom: 10,
+  },
+  therapistPreview: {
+    marginTop: 5,
+  },
+  therapistText: {
+    fontSize: 13,
+    color: themes.light.textSecondary,
+    marginBottom: 5,
+  },
   tips: {
     height: 150,
     width: '100%',
+    padding: 15,
   },
   title: {
     color: themes.light.textPrimary,
@@ -327,10 +440,18 @@ const styles = StyleSheet.create({
   viewAllText: {
     marginRight: Layout.spacing.xs,
   },
+  viewMoreText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    color: themes.light.accent,
+    marginTop: 10,
+  },
   wisdomBox: {
+    marginRight: 20,
+    marginLeft: 20,
     height: 125,
-    width: 370,
-    backgroundColor: themes.light.textSecondary,
+    width: 340,
+    backgroundColor: themes.light.button1,
   },
   wisdomDate: {
     color: themes.light.accent,
@@ -340,7 +461,6 @@ const styles = StyleSheet.create({
   wisdomText: {
     width: 250,
     color: themes.light.box,
-    fontWeight: 'bold',
     fontSize: 15,
     marginTop: 10,
   },

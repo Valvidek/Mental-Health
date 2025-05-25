@@ -7,7 +7,7 @@ import Input from '@/app/components/Input';
 import Button from '@/app/components/Button';
 import { useState } from 'react';
 
-const LOCAL_IP = '192.168.88.92'; 
+const LOCAL_IP = '192.168.1.14'; 
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;

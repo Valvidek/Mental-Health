@@ -100,7 +100,7 @@ const calendar = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View>
+      <View style={{ flex: 1, backgroundColor: themes.light.background }}>
         {/* Moods */}
         <TextTitle style={styles.statheader}>Recorded moods</TextTitle>
         <Box style={styles.moodTrackerSection}>
