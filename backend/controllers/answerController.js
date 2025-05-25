@@ -1,4 +1,3 @@
-// controllers/answerController.js
 const Answer = require('../models/Answer');
 
 exports.saveAnswers = async (req, res) => {

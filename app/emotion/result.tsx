@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,30 +7,37 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { PieChart, LineChart } from 'react-native-chart-kit';
+import { PieChart } from 'react-native-chart-kit';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 
 const ResultsScreen = () => {
-  const {
-    q0 = '0',
-    q1 = '0',
-    q2 = '0',
-    q3 = '0',
-    q4 = '0',
-    q5 = '0',
-    sleep = '0',
-  } = useLocalSearchParams() as Record<string, string>;
-
+  const { sleep = '0' } = useLocalSearchParams() as Record<string, string>;
   const router = useRouter();
+  const sleepValue = parseFloat(sleep);
 
- const sleepValue = parseFloat(sleep);
+  const [scores, setScores] = useState([
+    { label: 'Angry', value: 0, color: '#F49B54' },
+    { label: 'Sad', value: 0, color: '#80D6FB' },
+    { label: 'Anxious', value: 0, color: '#DCA1FF' },
+    { label: 'Meh', value: 0, color: '#FDBF50' },
+    { label: 'Lonely', value: 0, color: '#A4D37C' },
+    { label: 'Stressed', value: 0, color: '#60E8B1' },
+  ]);
 
-const dailySleepHours = Array(7).fill(sleepValue);
+  const chartConfig = {
+    backgroundGradientFrom: '#fff',
+    backgroundGradientTo: '#fff',
+    color: (opacity = 1) => `rgba(90, 79, 207, ${opacity})`,
+    labelColor: () => '#444',
+    propsForBackgroundLines: {
+      strokeDasharray: '',
+    },
+  };
 
   const sleepData = {
-    dailyHours: dailySleepHours,
+    dailyHours: Array(7).fill(sleepValue),
     averageHours: sleepValue,
     quality: sleepValue <= 3 ? 'Bad' : sleepValue <= 7 ? 'Okay' : 'Good',
     suggestion:
@@ -41,32 +48,34 @@ const dailySleepHours = Array(7).fill(sleepValue);
         : 'Great sleep! Keep it up!',
   };
 
-  const chartConfig = {
-    backgroundGradientFrom: '#fff',
-    backgroundGradientTo: '#fff',
-    color: (opacity = 1) => `rgba(90, 79, 207, ${opacity})`,
-    labelColor: () => '#444',
-    propsForBackgroundLines: {
-      strokeDasharray: '', 
-    },
-  };
-
-  const emotionScores = [
-    { label: 'Angry', value: parseInt(q0), color: '#F49B54' },
-    { label: 'Sad', value: parseInt(q1), color: '#80D6FB' },
-    { label: 'Anxious', value: parseInt(q2), color: '#DCA1FF' },
-    { label: 'Meh', value: parseInt(q3), color: '#FDBF50' },
-    { label: 'Lonely', value: parseInt(q4), color: '#A4D37C' },
-    { label: 'Stressed', value: parseInt(q5), color: '#60E8B1' },
-  ];
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={styles.heading}>Results</Text>
 
+      {/* Ask about feeling */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>How do you feel today?</Text>
+        {scores.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.optionButton}
+            onPress={() => {
+              const newScores = [...scores];
+              newScores[index].value += 1;
+              setScores(newScores);
+            }}
+          >
+            <Text style={{ color: item.color, fontWeight: '600' }}>
+              {item.label} ({item.value})
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Pie Chart */}
       <View style={[styles.card, styles.rowBetween]}>
         <PieChart
-          data={emotionScores.map((e) => ({
+          data={scores.map((e) => ({
             name: e.label,
             population: e.value,
             color: e.color,
@@ -82,17 +91,6 @@ const dailySleepHours = Array(7).fill(sleepValue);
           center={[0, 0]}
           absolute
         />
-      </View>
-
-      <View style={[styles.card, styles.rowBetween]}>
-        <View style={styles.analysisBox}>
-          <Text style={styles.analysisTitle}>Analysis</Text>
-          <Text style={styles.analysisText}>You are king of Boredom</Text>
-          <Text style={[styles.analysisText, { fontWeight: 'bold' }]}>Anxiety</Text>
-          <Text style={styles.analysisText}>
-            Keep an eye on yourself. Don’t forget to rest!
-          </Text>
-        </View>
       </View>
 
       {/* Sleep Quality */}
@@ -130,7 +128,6 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     alignSelf: 'center',
   },
-
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
@@ -153,23 +150,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
-  analysisBox: {
-    flex: 1,
-    paddingLeft: 12,
+  optionButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 12,
+    marginBottom: 8,
   },
-  analysisTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#444',
-    marginBottom: 6,
-  },
-  analysisText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
-  },
-
   sleepRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -201,7 +188,6 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
-
   footerText: {
     textAlign: 'center',
     fontSize: 14,

@@ -129,19 +129,19 @@ const LOCAL_IP = '10.0.4.143'
                 title="Anxiety Relief"
                 duration="15 min"
                 imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png"
-                youtubeURL="https://www.youtube.com/shorts/5MFSBMcYZTw"
+                youtubeURL="https://www.youtube.com/embed/UTHi8w3P0cY?si=NpjMC1n4wMcFre4E"
               />
               <MeditationCard
                 title="Mindful Breathing"
                 duration="10 min"
                 imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
-                youtubeURL="https://www.youtube.com/shorts/9Bqm14hCntg"
+                youtubeURL="https://www.youtube.com/embed/UTHi8w3P0cY?si=NpjMC1n4wMcFre4E"
               />
               <MeditationCard
                 title="Meditation for mornings"
                 duration="20 min"
                 imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg"
-                youtubeURL="https://www.youtube.com/watch?v=lEKDob0LwRM"
+                youtubeURL="https://www.youtube.com/embed/UTHi8w3P0cY?si=NpjMC1n4wMcFre4E"
               />
             </View>
           </ScrollView>

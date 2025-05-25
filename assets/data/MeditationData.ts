@@ -6,9 +6,8 @@ export const meditations = [
     duration: '10 min',
     imageUrl: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'Mindfulness',
-    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-
   {
     id: '2',
     title: 'Anxiety Relief',
@@ -16,9 +15,8 @@ export const meditations = [
     duration: '15 min',
     imageUrl: 'https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'Anxiety',
-    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-
   {
     id: '3',
     title: 'Deep Sleep',
@@ -26,17 +24,17 @@ export const meditations = [
     duration: '20 min',
     imageUrl: 'https://images.pexels.com/photos/355887/pexels-photo-355887.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'Sleep',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-
   {
     id: '4',
     title: 'Focus & Clarity',
     description: 'Enhance your concentration and mental clarity',
     duration: '12 min',
     imageUrl: 'https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Minfulness',
+    category: 'Mindfulness',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-
   {
     id: '5',
     title: 'Self-Compassion',
@@ -44,8 +42,8 @@ export const meditations = [
     duration: '18 min',
     imageUrl: 'https://images.pexels.com/photos/3560168/pexels-photo-3560168.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'Mindfulness',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-
   {
     id: '6',
     title: 'PTSD Relief',
@@ -53,7 +51,6 @@ export const meditations = [
     duration: '30 min',
     imageUrl: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'PTSD',
-    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+    youtubeURL: 'https://www.youtube.com/watch?v=kVulfyOfx1g',
   },
-  
 ];
