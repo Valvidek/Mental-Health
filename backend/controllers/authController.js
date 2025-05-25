@@ -10,39 +10,50 @@ exports.signup = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ error: 'Email already in use' });
+      return res.status(400).json({ error: 'И-мэйл аль хэдийн ашиглагдсан байна.' });
     }
 
     const hashed = await bcrypt.hash(password, 10);
+    // hasAnsweredQuestions автоматаар false болно
     const user = new User({ name, email, password: hashed });
     await user.save();
 
-    res.status(201).json({ message: 'Хэрэглэгч бүртгэгдлээ' });
+    res.status(201).json({ message: 'Хэрэглэгч амжилттай бүртгэгдлээ.' });
   } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
+    console.error(err);
+    res.status(500).json({ error: 'Серверийн алдаа.' });
   }
 };
 
 exports.signin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: 'Имэйл эсвэл нууц үг буруу' });
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Имэйл болон нууц үг шаардлагатай.' });
     }
 
-    // Нэвтэрсэн хэрэглэгчийн ID-г буцаана
-    res.json({
-      message: 'Амжилттай нэвтэрлээ',
-      user: {
-        id: user._id, // ✅ id-г оруулж байна
-        name: user.name,
-        email: user.email
-      }
-    });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: 'Имэйл эсвэл нууц үг буруу.' });
+    }
 
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Имэйл эсвэл нууц үг буруу.' });
+    }
+
+    // Амжилттай нэвтрэлтийн хариу
+    res.json({
+      message: 'Амжилттай нэвтэрлээ.',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        hasAnsweredQuestions: user.hasAnsweredQuestions,  // энд нэмлээ
+      },
+    });
   } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
+    console.error(err);
+    res.status(500).json({ error: 'Серверийн алдаа.' });
   }
 };

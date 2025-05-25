@@ -7,7 +7,7 @@ import Input from '@/app/components/Input';
 import Button from '@/app/components/Button';
 import { useState } from 'react';
 import axios from 'axios';
-const LOCAL_IP = '10.0.4.143' 
+const LOCAL_IP = '192.168.88.207' 
 
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { View, Text, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LOCAL_IP = '10.0.4.143';
+const LOCAL_IP = '192.168.88.207';
 const questions = [
   'Та хэр их уурладаг вэ?',
   'Та хэр их гунигладаг вэ?',

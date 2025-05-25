@@ -12,7 +12,7 @@ const Sleep: React.FC = () => {
   const [value, setValue] = useState<number>(5);
 
   const handleNext = (): void => {
-    router.push(`/emotion/todayfocus?sleep=${value}`);
+    router.push(`/emotion/result?sleep=${value}`);
   };
 
   const getColor = (): string => {
