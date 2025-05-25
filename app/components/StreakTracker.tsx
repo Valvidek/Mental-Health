@@ -70,13 +70,17 @@ export default function StreakTracker() {
 
   const initializeStreak = useCallback(async () => {
     const today = new Date();
-    const lastOpened = await AsyncStorage.getItem('lastOpened');
-    const storedStreak = parseInt(
-      (await AsyncStorage.getItem('streak')) || '0',
-      10
-    );
+    const storedUserId = await AsyncStorage.getItem('userId');
+    if (!storedUserId) return;
+
+    const streakKey = `streak_${storedUserId}`;
+    const startDayKey = `startDay_${storedUserId}`;
+    const lastOpenedKey = `lastOpened_${storedUserId}`;
+
+    const lastOpened = await AsyncStorage.getItem(lastOpenedKey);
+    const storedStreak = parseInt((await AsyncStorage.getItem(streakKey)) || '0', 10);
     const storedStartDay = new Date(
-      (await AsyncStorage.getItem('startDay')) || today.toISOString()
+      (await AsyncStorage.getItem(startDayKey)) || today.toISOString()
     );
 
     let newStreak = storedStreak;
@@ -98,9 +102,9 @@ export default function StreakTracker() {
     }
 
     await AsyncStorage.multiSet([
-      ['streak', newStreak.toString()],
-      ['startDay', newStartDay.toISOString()],
-      ['lastOpened', today.toISOString()],
+      [streakKey, newStreak.toString()],
+      [startDayKey, newStartDay.toISOString()],
+      [lastOpenedKey, today.toISOString()],
     ]);
 
     setStreak(newStreak);
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   todayCircle: {
-    backgroundColor: themes.light.button1 + '5', // semi-transparent highlight
+    backgroundColor: themes.light.button1 + '5',
     borderWidth: 3,
     borderColor: themes.light.button1,
     borderRadius: 30,

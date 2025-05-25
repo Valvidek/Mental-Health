@@ -13,7 +13,6 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 const screenWidth = Dimensions.get('window').width;
 
 const ResultsScreen = () => {
-  // ✅ Type assertion to safely handle string params
   const {
     q0 = '0',
     q1 = '0',
@@ -48,7 +47,7 @@ const dailySleepHours = Array(7).fill(sleepValue);
     color: (opacity = 1) => `rgba(90, 79, 207, ${opacity})`,
     labelColor: () => '#444',
     propsForBackgroundLines: {
-      strokeDasharray: '', // solid lines
+      strokeDasharray: '', 
     },
   };
 
@@ -65,7 +64,6 @@ const dailySleepHours = Array(7).fill(sleepValue);
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={styles.heading}>Results</Text>
 
-      {/* Pie Chart & Mood Analysis */}
       <View style={[styles.card, styles.rowBetween]}>
         <PieChart
           data={emotionScores.map((e) => ({
@@ -101,19 +99,6 @@ const dailySleepHours = Array(7).fill(sleepValue);
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Sleep Quality</Text>
         <View style={styles.sleepRow}>
-          <LineChart
-            data={{
-              labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-              datasets: [{ data: sleepData.dailyHours }],
-            }}
-            width={screenWidth * 0.5}
-            height={120}
-            chartConfig={chartConfig}
-            withDots
-            withInnerLines={false}
-            bezier
-            style={{ borderRadius: 10 }}
-          />
           <View style={styles.sleepInfo}>
             <Text style={styles.sleepStat}>{sleepData.averageHours} Hours</Text>
             <Text style={styles.sleepLabel}>Quality</Text>
@@ -125,7 +110,7 @@ const dailySleepHours = Array(7).fill(sleepValue);
 
       {/* CTA */}
       <Text style={styles.footerText}>We Can Work Together for the better you!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/profile')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
     </ScrollView>

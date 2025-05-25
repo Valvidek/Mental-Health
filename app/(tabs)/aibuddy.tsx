@@ -49,6 +49,7 @@ export default function MeditationApp() {
       )}
       {currentScreen === 'chat' && (
         <AIChat
+
         />
       )}
       {currentScreen === 'reward' && (

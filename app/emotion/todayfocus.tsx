@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Colors from '@/constants/Colors';
 
-// PNG image imports
 const focusOptions = [
   {
     title: 'Work',
@@ -72,7 +71,7 @@ const FocusScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: Colors.lightTheme.background.secondary,
     padding: 16,
     justifyContent: 'center',
 
