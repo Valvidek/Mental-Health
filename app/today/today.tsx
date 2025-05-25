@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CompletionScreen from './CompletionScreen'; 
+import { themes } from '@/constants/Colours';
 import {
   StyleSheet,
   Text,
@@ -13,7 +16,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 
-export default function App() {
+interface StreakData {
+  currentStreak: number;
+  longestStreak: number;
+  totalEntries: number;
+  lastEntryDate: string | null;
+}
+
+// DEV MODE FLAG - Set to true to disable streak tracking
+const DEV_MODE = true;
+
+export default function LogTodayScreen() {
   const [moodIndex, setMoodIndex] = useState<number | null>(null);
   const [journalEntry, setJournalEntry] = useState('');
   const [affirmation, setAffirmation] = useState('');
@@ -21,6 +34,15 @@ export default function App() {
   const [selectedHour, setSelectedHour] = useState(7);
   const [selectedFocus, setSelectedFocus] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  
+  // New state for completion screen and streak tracking
+  const [showCompletionScreen, setShowCompletionScreen] = useState(false);
+  const [streakData, setStreakData] = useState<StreakData>({
+    currentStreak: 0,
+    longestStreak: 0,
+    totalEntries: 0,
+    lastEntryDate: null,
+  });
 
   const moods = [
     { id: '1', mood: 'Happy', image: require('../../assets/icons/happy1.png') },
@@ -41,7 +63,28 @@ export default function App() {
   const LOCAL_IP = '10.0.4.143'
   const baseURL = Platform.OS === 'web' ? 'http://localhost:5000' : `http://${LOCAL_IP}:5000`;
 
-  const getSleepQualityLabel = (value: number) => {
+  // Load streak data when component mounts
+  useEffect(() => {
+    const loadStreakData = async () => {
+      if (DEV_MODE) {
+        console.log('DEV MODE: Streak loading disabled');
+        return;
+      }
+      
+      try {
+        const storedData = await AsyncStorage.getItem('streakData');
+        if (storedData) {
+          setStreakData(JSON.parse(storedData));
+        }
+      } catch (error) {
+        console.error('Error loading streak data:', error);
+      }
+    };
+    
+    loadStreakData();
+  }, []);
+
+  const getSleepQualityLabel = (value: number): string => {
     if (value <= 2) return 'Very Poor';
     if (value <= 4) return 'Poor';
     if (value <= 6) return 'Average';
@@ -49,7 +92,7 @@ export default function App() {
     return 'Very Good';
   };
 
-  const validateInputs = () => {
+  const validateInputs = (): boolean => {
     if (moodIndex === null) {
       Alert.alert('Алдаа', 'Mood-оо сонгоно уу.');
       return false;
@@ -77,12 +120,86 @@ export default function App() {
     return true;
   };
 
-  const saveRecordToServer = async () => {
+  const updateStreakData = async (): Promise<boolean> => {
+    if (DEV_MODE) {
+      console.log('DEV MODE: Streak tracking disabled - allowing multiple entries per day');
+      // In dev mode, just increment totalEntries for testing
+      setStreakData(prev => ({
+        ...prev,
+        totalEntries: prev.totalEntries + 1,
+        // Optional: You can set mock values for testing the UI
+        currentStreak: Math.floor(Math.random() * 30) + 1, // Random streak 1-30
+        longestStreak: Math.floor(Math.random() * 50) + 10, // Random longest 10-60
+      }));
+      return true;
+    }
+
+    try {
+      const today = new Date().toDateString();
+      const storedData = await AsyncStorage.getItem('streakData');
+      let currentStreakData: StreakData = {
+        currentStreak: 0,
+        longestStreak: 0,
+        totalEntries: 0,
+        lastEntryDate: null,
+      };
+
+      if (storedData) {
+        currentStreakData = JSON.parse(storedData);
+      }
+
+      // Check if user already logged today
+      if (currentStreakData.lastEntryDate === today) {
+        Alert.alert('Info', 'You\'ve already logged today!');
+        return false;
+      }
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayString = yesterday.toDateString();
+
+      // Calculate new streak
+      let newStreak = 1;
+      if (currentStreakData.lastEntryDate === yesterdayString) {
+        // Continuing streak
+        newStreak = currentStreakData.currentStreak + 1;
+      } else if (currentStreakData.lastEntryDate !== null) {
+        // Streak broken, starting fresh
+        newStreak = 1;
+      }
+
+      // Update data
+      const updatedData: StreakData = {
+        currentStreak: newStreak,
+        longestStreak: Math.max(newStreak, currentStreakData.longestStreak),
+        totalEntries: currentStreakData.totalEntries + 1,
+        lastEntryDate: today,
+      };
+
+      // Save to AsyncStorage
+      await AsyncStorage.setItem('streakData', JSON.stringify(updatedData));
+      setStreakData(updatedData);
+      
+      return true;
+    } catch (error) {
+      console.error('Error updating streak data:', error);
+      return true; // Continue anyway if there's an error
+    }
+  };
+
+  const saveRecordToServer = async (): Promise<void> => {
     if (!validateInputs()) return;
 
     setIsSaving(true);
 
     try {
+      // First update streak data
+      const shouldContinue = await updateStreakData();
+      if (!shouldContinue) {
+        setIsSaving(false);
+        return;
+      }
+
       const payload = {
         mood: moods[moodIndex!].mood,
         journalEntry: journalEntry.trim(),
@@ -106,6 +223,18 @@ export default function App() {
       if (!response.ok) {
         Alert.alert('Алдаа', data.error || 'Алдаа гарлаа');
       } else {
+<<<<<<< HEAD
+        // Show completion screen instead of alert
+        setShowCompletionScreen(true);
+        
+        // Reset form after success
+        setMoodIndex(null);
+        setJournalEntry('');
+        setAffirmation('');
+        setSleepQuality(7.5);
+        setSelectedHour(7);
+        setSelectedFocus(null);
+=======
         Alert.alert('Амжилт', 'Амжилттай хадгалагдлаа!');
         // Хэрэв хүсвэл энд утгуудыг дахин эхлүүлэх боломжтой:
         // setMoodIndex(null);
@@ -114,6 +243,7 @@ export default function App() {
         // setSelectedFocus(null);
         // setSleepQuality(7.5);
         // setSelectedHour(7);
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
       }
     } catch (error) {
       console.error('Error saving record:', error);
@@ -128,6 +258,9 @@ export default function App() {
       <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.title}>Record Your Day!</Text>
+          {DEV_MODE && (
+            <Text style={styles.devModeText}>🔧 DEV MODE: Streak tracking disabled</Text>
+          )}
         </View>
 
         <View style={styles.moodContainer}>
@@ -243,24 +376,50 @@ export default function App() {
           </Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Completion Screen */}
+      <CompletionScreen
+        visible={showCompletionScreen}
+        onClose={() => setShowCompletionScreen(false)}
+        currentStreak={streakData.currentStreak}
+        totalEntries={streakData.totalEntries}
+        longestStreak={streakData.longestStreak}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F5F5' },
+  container: { flex: 1, backgroundColor: themes.light.background },
   scrollView: { flex: 1, padding: 20 },
   header: { marginBottom: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#333' },
+  title: { fontSize: 24, fontWeight: 'bold', color: themes.light.textPrimary },
+  devModeText: { 
+    fontSize: 10, 
+    color: '#FF6B6B', 
+    marginTop: 5,
+    fontWeight: '600',
+  },
   moodContainer: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
   moodButton: {
+<<<<<<< HEAD
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+=======
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: '#eee',
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
     justifyContent: 'center',
     alignItems: 'center',
   },
+<<<<<<< HEAD
+  selectedMood: { backgroundColor: themes.light.button1 },
+  moodImage: { width: 40, height: 40 },
+  section: {
+=======
   selectedMood: { backgroundColor: '#8BC34A' },
   moodImage: { width: 24, height: 24 },
   section: { marginBottom: 20 },
@@ -270,8 +429,14 @@ const styles = StyleSheet.create({
     borderColor: '#bbb',
     borderRadius: 8,
     padding: 10,
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
     backgroundColor: '#fff',
   },
+<<<<<<< HEAD
+  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, color: themes.light.textPrimary },
+  input: { borderWidth: 1, borderColor: '#E0E0E0', borderRadius: 8, padding: 10 },
+=======
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
   focusGrid: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -285,10 +450,15 @@ const styles = StyleSheet.create({
     width: 80,
   },
   selectedFocusItem: {
-    backgroundColor: '#8BC34A',
+    backgroundColor: themes.light.button1,
   },
+<<<<<<< HEAD
+  focusLabel: { marginTop: 8, fontWeight: '600', color: themes.light.textPrimary },
+  sliderLabel: { textAlign: 'center', marginTop: 8, fontWeight: '600', color: themes.light.textSecondary }, 
+=======
   focusLabel: { marginTop: 8, fontSize: 12, color: '#333' },
   sliderLabel: { textAlign: 'center', marginTop: 4, fontWeight: '600', color: '#555' },
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
   hoursContainer: { paddingVertical: 10 },
   hourBox: {
     width: 50,
@@ -299,6 +469,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
+<<<<<<< HEAD
+  selectedHourBox: {
+    backgroundColor: themes.light.button1,  
+  },
+  hoursText: { fontSize: 18, fontWeight: '500', color: themes.light.textPrimary },
+  hoursBig: { fontSize: 24, color: '#fff' },
+  saveButton: {
+    backgroundColor: themes.light.button1,
+    paddingVertical: 15,
+    borderRadius: 15,
+=======
   selectedHourBox: { backgroundColor: '#8BC34A' },
   hoursText: { fontSize: 18, fontWeight: '600', color: '#555' },
   hoursBig: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
@@ -306,6 +487,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8BC34A',
     padding: 15,
     borderRadius: 10,
+>>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
     alignItems: 'center',
   },
   saveButtonText: {

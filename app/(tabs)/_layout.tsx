@@ -1,19 +1,40 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import { themes } from '@/constants/Colours';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
+import Colors from '@/constants/Colors';
+import { useThemeContext } from '../context/ThemeContext';
 
 export default function TabLayout() {
+  const { darkMode } = useThemeContext();
+  const themeColors = darkMode ? Colors.darkTheme : Colors.lightTheme;
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: themes.light.button1,
-        tabBarInactiveTintColor: themes.light.textTertiary,
-        tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarActiveTintColor: themeColors.secondary.default,
+        tabBarInactiveTintColor: themeColors.text.tertiary,
+        tabBarStyle: {
+          height: 70,
+          paddingBottom: 7,
+          paddingTop: 10,
+          borderRadius: 20,
+          marginHorizontal: 10,
+          bottom: 10,
+          backgroundColor: themeColors.background.secondary,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 5 },
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          elevation: 5,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'PlusJakartaSans-Medium',
+          fontSize: 12,
+        },
         headerShown: false,
       }}
     >
@@ -30,29 +51,39 @@ export default function TabLayout() {
         name="library"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome6 name="chart-simple" size={30} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Entypo name="book" size={32} color={color} />
           ),
         }}
       />
-      {/* aibuddy нь өөрийнхөө дотор дэлгэцүүдийг animation-тайгаар өөрчилнө */}
       <Tabs.Screen
         name="aibuddy"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
-          <View style={styles.aibuddyIconWrapper}>
-            <FontAwesome name="paw" size={45} color="white" />
-          </View>
-        ),
+          tabBarIcon: () => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 70,
+                width: 70,
+                padding: 10,
+                borderRadius: 50,
+                marginTop: -22,
+                backgroundColor: themeColors.primary.default,
+              }}
+            >
+              <FontAwesome name="paw" size={45} color="white" />
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
         name="statistics"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="calendar" size={30} color={color} />
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name="chart-simple" size={30} color={color} />
           ),
         }}
       />
@@ -68,25 +99,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: 'white',
-    height: 70,
-    paddingBottom: 5,
-    paddingTop: 10,
-  },
-  tabBarLabel: {
-    fontFamily: 'PlusJakartaSans-Medium',
-    fontSize: 12,
-  },
-  aibuddyIconWrapper: {
-    backgroundColor: themes.light.button1,
-    alignItems: 'center',
-    height: 70,
-    width: 70,
-    padding: 10,
-    borderRadius: 50,
-    marginTop: -22,
-  },
-});

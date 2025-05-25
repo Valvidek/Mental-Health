@@ -1,5 +1,4 @@
 import { Text, TextProps, StyleSheet } from 'react-native';
-import Colors from '@/constants/Colors';
 
 export function TextRegular(props: TextProps) {
   return <Text {...props} style={[styles.regular, props.style]} />;
@@ -94,3 +93,16 @@ const styles = StyleSheet.create({
 
   },
 });
+// Add this at the bottom of StyledText.tsx
+export default {
+  TextRegular,
+  TextMedium,
+  TextSemiBold,
+  TextBold,
+  TextTitle,
+  TextHeading,
+  TextSubheading,
+  TextBody,
+  TextCaption,
+  TextSmall,
+};

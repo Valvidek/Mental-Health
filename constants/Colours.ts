@@ -20,7 +20,7 @@ export const themes = {
       mascot1: '#879FFD',
       mascot2: '#FF5A5A',
       mascot3: '#B7D1FD',
-      button1: '#8D78FF',
+      button1: '#755af4',
       button2: '#FF5A5A',
     },
   

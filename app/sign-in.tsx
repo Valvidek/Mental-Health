@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Text } from 'react-native';
 import { Link, router } from 'expo-router';
 import { TextTitle, TextBody, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
@@ -8,12 +8,9 @@ import Button from '@/app/components/Button';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LOCAL_IP = '10.0.4.143' // 👈 IP-г өөрийнхөө дагуу солиорой
+const LOCAL_IP = '192.168.88.207'; // өөрийн IP
 
-const baseURL = Platform.OS === 'web'
-  ? 'http://localhost:5000'
-  : `http://${LOCAL_IP}:5000`;
-
+const baseURL = Platform.OS === 'web' ? 'http://localhost:5000' : `http://${LOCAL_IP}:5000`;
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -21,61 +18,52 @@ export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-const handleSignIn = async () => {
-  setError(null);
+  const handleSignIn = async () => {
+    setError(null);
 
-  if (!email || !password) {
-    setError('Please enter both email and password');
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const response = await fetch(`${baseURL}/api/auth/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Sign-in failed');
+    if (!email || !password) {
+      setError('Please enter both email and password');
+      return;
     }
 
-    const userId = data.user?.id || data.user?._id;
+    setLoading(true);
 
-    if (userId) {
-      await AsyncStorage.setItem('userId', userId);
+    try {
+      const response = await fetch(`${baseURL}/api/auth/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'Sign-in failed');
+      }
+
+      const data = await response.json();
+
+      const userId = data.user?.id || data.user?._id;
+      if (userId) await AsyncStorage.setItem('userId', userId);
+
+      if (data.user?.hasAnsweredQuestions) {
+        router.replace('/(tabs)');
+      } else {
+        router.replace('/emotion/0');
+      }
+    } catch (err: any) {
+      console.error('❌ Sign-in error:', err.message);
+      setError(err.message || 'Unable to sign in');
+    } finally {
+      setLoading(false);
     }
-
-    const hasAnswered = data.user?.hasAnsweredQuestions;
-
-    if (hasAnswered) {
-      router.replace('/(tabs)');
-    } else {
-      router.replace('/emotion/0');
-    }
-
-  } catch (err: any) {
-    console.error('❌ Sign-in error:', err.message);
-    setError(err.message || 'Unable to sign in');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()} />
 
       <View style={styles.content}>
         <TextTitle style={styles.title}>Welcome Back</TextTitle>
@@ -124,6 +112,7 @@ const handleSignIn = async () => {
     </KeyboardAvoidingView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

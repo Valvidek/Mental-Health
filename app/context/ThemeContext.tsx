@@ -25,3 +25,4 @@ export const useThemeContext = () => {
   }
   return context;
 };
+export default ThemeProvider;

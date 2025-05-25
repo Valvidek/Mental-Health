@@ -11,16 +11,17 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { themes } from '@/constants/Colours';
-import { GoogleGenAI } from "@google/genai";
+import { useThemeContext } from '../context/ThemeContext';
+import Colors from '@/constants/Colors';
+import { GoogleGenAI } from '@google/genai';
 
 interface Message {
   id: string;
-  role: "user" | "ai" | "model";
+  role: 'user' | 'ai' | 'model';
   text: string;
 }
 
-const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY!;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 const prepareUserInput = (input: string) => {
@@ -30,8 +31,8 @@ const prepareUserInput = (input: string) => {
 const sendToGemini = async (userInput: string) => {
   const prompt = `Та зөвхөн сэтгэл зүйн зөвлөгөө өгнө үү. Хэрэглэгчийн асуулт: ${userInput}`;
   const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: prompt,
+    model: 'gemini-2.0-flash',
+    contents: userInput,
   });
   return response.text;
 };
@@ -39,20 +40,21 @@ const sendToGemini = async (userInput: string) => {
 const STORAGE_KEY = 'CHAT_MESSAGES';
 
 export default function AIChat() {
+  const { darkMode } = useThemeContext();
+  const themeColors = darkMode ? Colors.darkTheme : Colors.lightTheme;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
-  // Мессеж хадгалах функц
   const saveMessages = async (msgs: Message[]) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
     } catch (e) {
-      console.error('Мессеж хадгалах үед алдаа гарлаа:', e);
+      console.error('Error saving messages:', e);
     }
   };
 
-  // Хадгалагдсан мессежийг ачааллах
   const loadMessages = async () => {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEY);
@@ -60,7 +62,7 @@ export default function AIChat() {
         setMessages(JSON.parse(stored));
       }
     } catch (e) {
-      console.error('Мессеж ачаалах үед алдаа гарлаа:', e);
+      console.error('Error loading messages:', e);
     }
   };
 
@@ -68,7 +70,6 @@ export default function AIChat() {
     loadMessages();
   }, []);
 
-  // Мессеж илгээх үйлдэл
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -113,31 +114,37 @@ export default function AIChat() {
     }
   };
 
-  // Мессеж устгах функц
   const deleteMessage = async (id: string) => {
     const updatedMsgs = messages.filter((msg) => msg.id !== id);
     setMessages(updatedMsgs);
     await saveMessages(updatedMsgs);
   };
 
-  // Мессежийг жагсаалтад харуулах
   const renderItem = ({ item }: { item: Message }) => (
     <View
       style={[
         styles.messageContainer,
-        item.role === 'user' ? styles.userMsg : styles.aiMsg,
+        {
+          alignSelf: item.role === 'user' ? 'flex-end' : 'flex-start',
+          backgroundColor:
+            item.role === 'user'
+              ? themeColors.primary.default
+              : themeColors.background.tertiary,
+        },
       ]}
     >
-      <Text style={styles.messageText}>{item.text}</Text>
+      <Text style={[styles.messageText, { color: themeColors.text.primary }]}>
+        {item.text}
+      </Text>
       <TouchableOpacity onPress={() => deleteMessage(item.id)} style={styles.deleteIcon}>
-        <Ionicons name="trash" size={16} color="#888" />
+        <Ionicons name="trash" size={16} color={themeColors.text.tertiary} />
       </TouchableOpacity>
     </View>
   );
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: themeColors.background.primary }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={80}
     >
@@ -152,16 +159,25 @@ export default function AIChat() {
         }
       />
 
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, { backgroundColor: themeColors.background.secondary, borderTopColor: themeColors.border }]}>
         <TextInput
-          style={styles.input}
-          placeholder="tsonhoor garaad user...?"
+          style={[
+            styles.input,
+            {
+              backgroundColor: themeColors.background.tertiary,
+              color: themeColors.text.primary,
+            },
+          ]}
+          placeholder="Асуух зүйлээ бичнэ үү..."
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
-          placeholderTextColor="#999"
+          placeholderTextColor={themeColors.text.tertiary}
         />
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+        <TouchableOpacity
+          onPress={sendMessage}
+          style={[styles.sendButton, { backgroundColor: themeColors.accent.default }]}
+        >
           <Ionicons name="send" size={20} color="white" />
         </TouchableOpacity>
       </View>
@@ -172,7 +188,6 @@ export default function AIChat() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: themes.light.background,
   },
   chatContainer: {
     padding: 16,
@@ -185,17 +200,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     position: 'relative',
   },
-  userMsg: {
-    alignSelf: 'flex-end',
-    backgroundColor: themes.light.button1,
-  },
-  aiMsg: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#e6e6eb',
-  },
   messageText: {
     fontSize: 16,
-    color: '#333',
   },
   deleteIcon: {
     position: 'absolute',
@@ -207,21 +213,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     padding: 10,
-    backgroundColor: '#fff',
     width: '100%',
     borderTopWidth: 1,
-    borderTopColor: '#eee',
   },
   input: {
     flex: 1,
     height: 40,
-    backgroundColor: '#f2f2f2',
     borderRadius: 20,
     paddingHorizontal: 16,
   },
   sendButton: {
     marginLeft: 10,
-    backgroundColor: themes.light.accent,
     borderRadius: 20,
     padding: 10,
     justifyContent: 'center',
