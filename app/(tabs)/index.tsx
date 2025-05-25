@@ -43,14 +43,12 @@ export default function HomeScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mood }),
       });
-
       const data = await response.json();
       console.log('Mood saved:', data);
     } catch (error) {
       console.error('Failed to save mood:', error);
     }
-  }
-
+  };
 
   const handlePressBell = () => {
     bellScale.value = withSpring(1.2, { damping: 4 }, () => {
@@ -128,9 +126,7 @@ export default function HomeScreen() {
             <TouchableOpacity onPress={handleAddMood}>
               <Image style={styles.icons} source={require('@/assets/icons/happy1.png')} />
             </TouchableOpacity>
-            <View style={styles.dateContainer}>
-              <Text style={{ color: themes.light.box }}>15 Tue</Text>
-            </View>
+
             <View style={styles.line} />
             <TextInput
               placeholder="How do you feel today?"
@@ -207,20 +203,10 @@ export default function HomeScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: themes.light.background,
     flex: 1,
-  },
-  dateContainer: {
-    top: 45,
-    width: 55,
-    height: 20,
-    alignItems: 'center',
-    borderRadius: 10,
-    position: 'relative',
-    backgroundColor: themes.light.textPrimary,
   },
   flex: {
     display: 'flex',
@@ -282,11 +268,6 @@ const styles = StyleSheet.create({
     top: 70,
     left: 310,
   },
-  meditation: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 20,
-  },
   moodList: {
     paddingVertical: Layout.spacing.md,
   },
@@ -315,7 +296,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Layout.spacing.md,
   },
-  sectionTitle: {},
   tips: {
     height: 150,
     width: '100%',
@@ -326,7 +306,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   TodayInput: {
-    position: 'absolute',
     fontSize: 13,
     zIndex: 1,
     left: 100,
@@ -339,30 +318,6 @@ const styles = StyleSheet.create({
   Todo: {
     fontWeight: 'bold',
     color: themes.light.textPrimary,
-  },
-  todaysMood: {
-    height: 80,
-    width: '100%',
-    backgroundColor: themes.light.box,
-    borderRadius: 10,
-    shadowColor: themes.light.textPrimary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  trackButton: {
-    marginTop: Layout.spacing.md,
-  },
-  viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  viewAllText: {
-    marginRight: Layout.spacing.xs,
   },
   wisdomBox: {
     height: 125,

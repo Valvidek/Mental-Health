@@ -38,7 +38,7 @@ export default function App() {
     { label: 'Community', Image: require('../../assets/icons/high-five1.png') },
   ];
 
-  const LOCAL_IP = '192.168.88.92';
+  const LOCAL_IP = '192.168.88.92'; // Серверийн IP-г зөв тохируулна уу
   const baseURL = Platform.OS === 'web' ? 'http://localhost:5000' : `http://${LOCAL_IP}:5000`;
 
   const getSleepQualityLabel = (value: number) => {
@@ -95,7 +95,7 @@ export default function App() {
       console.log('Sending data:', payload);
       console.log('Base URL:', baseURL);
 
-      const response = await fetch(`${baseURL}/moods`, {
+      const response = await fetch(`${baseURL}/api/moods`, {  // <<=== энд /api нэмэв
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -107,13 +107,13 @@ export default function App() {
         Alert.alert('Алдаа', data.error || 'Алдаа гарлаа');
       } else {
         Alert.alert('Амжилт', 'Амжилттай хадгалагдлаа!');
-        // Reset form after success
+        // Хэрэв хүсвэл энд утгуудыг дахин эхлүүлэх боломжтой:
         // setMoodIndex(null);
         // setJournalEntry('');
         // setAffirmation('');
+        // setSelectedFocus(null);
         // setSleepQuality(7.5);
         // setSelectedHour(7);
-        // setSelectedFocus(null);
       }
     } catch (error) {
       console.error('Error saving record:', error);
@@ -257,84 +257,60 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+    backgroundColor: '#eee',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   selectedMood: { backgroundColor: '#8BC34A' },
   moodImage: { width: 24, height: 24 },
-  section: {
+  section: { marginBottom: 20 },
+  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8, color: '#555' },
+  input: {
+    borderWidth: 1,
+    borderColor: '#bbb',
+    borderRadius: 8,
+    padding: 10,
     backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 15,
-    marginBottom: 20,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
-  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, color: '#333' },
-  input: { borderWidth: 1, borderColor: '#E0E0E0', borderRadius: 8, padding: 10 },
   focusGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginBottom: 20,
   },
   focusItem: {
-    width: '48%',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 15,
     alignItems: 'center',
-    marginBottom: 15,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#eee',
+    width: 80,
   },
   selectedFocusItem: {
     backgroundColor: '#8BC34A',
   },
-  focusLabel: { marginTop: 8, fontWeight: '600', color: '#333' },
-  sliderLabel: { textAlign: 'center', marginTop: 8, fontWeight: '600', color: '#333' },
+  focusLabel: { marginTop: 8, fontSize: 12, color: '#333' },
+  sliderLabel: { textAlign: 'center', marginTop: 4, fontWeight: '600', color: '#555' },
   hoursContainer: { paddingVertical: 10 },
   hourBox: {
-    marginRight: 10,
-    width: 45,
-    height: 45,
-    borderRadius: 15,
-    backgroundColor: '#fff',
+    width: 50,
+    height: 50,
+    backgroundColor: '#eee',
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    marginRight: 10,
   },
-  selectedHourBox: {
-    backgroundColor: '#8BC34A',
-  },
-  hoursText: { fontSize: 18, fontWeight: '500', color: '#555' },
-  hoursBig: { fontSize: 24, color: '#fff' },
+  selectedHourBox: { backgroundColor: '#8BC34A' },
+  hoursText: { fontSize: 18, fontWeight: '600', color: '#555' },
+  hoursBig: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
   saveButton: {
     backgroundColor: '#8BC34A',
-    paddingVertical: 15,
-    borderRadius: 15,
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 40,
   },
   saveButtonText: {
     color: '#fff',
-    fontWeight: '600',
-    fontSize: 18,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

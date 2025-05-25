@@ -1,24 +1,29 @@
 const Mood = require('../models/Mood');
 
-exports.getMoods = async (req, res) => {
+exports.saveMood = async (req, res) => {
   try {
-    const moods = await Mood.find().sort({ date: -1 });
-    res.json(moods);
-  } catch (err) {
-    res.status(500).json({ error: 'Унших үед алдаа гарлаа' });
-  }
-};
+    console.log('Mood model:', Mood);  
 
-exports.createMood = async (req, res) => {
-  try {
     const { mood, journalEntry, affirmation, sleepQuality, selectedHour, selectedFocus } = req.body;
 
-    if (!mood) return res.status(400).json({ error: 'Mood шаардлагатай' });
+    if (!mood || !journalEntry || !affirmation || sleepQuality === undefined || selectedHour === undefined || selectedFocus === undefined) {
+      return res.status(400).json({ error: 'Бүх талбаруудыг бөглөнө үү.' });
+    }
 
-    const newMood = new Mood({ mood, journalEntry, affirmation, sleepQuality, selectedHour, selectedFocus });
+    const newMood = new Mood({
+      mood,
+      journalEntry,
+      affirmation,
+      sleepQuality,
+      selectedHour,
+      selectedFocus,
+    });
+
     await newMood.save();
-    res.status(201).json({ message: 'Mood хадгалагдлаа', mood: newMood });
-  } catch (err) {
-    res.status(500).json({ error: 'Хадгалах үед алдаа гарлаа' });
+
+    res.status(201).json({ message: 'Амжилттай хадгаллаа!' });
+  } catch (error) {
+    console.error('Error saving mood:', error);
+    res.status(500).json({ error: 'Сервер дотор алдаа гарлаа.' });
   }
 };

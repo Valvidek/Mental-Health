@@ -1,11 +1,10 @@
 import { Tabs } from 'expo-router';
-import { BackHandler, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { themes } from '@/constants/Colours';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
-import { Chrome as Home, BookHeart, PencilLine, Users, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -22,7 +21,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <MaterialIcons name="space-dashboard" size={32} color={color} />
           ),
         }}
@@ -31,28 +30,28 @@ export default function TabLayout() {
         name="statistics"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <FontAwesome6 name="chart-simple" size={30} color={color} />
           ),
         }}
       />
+      {/* aibuddy нь өөрийнхөө дотор дэлгэцүүдийг animation-тайгаар өөрчилнө */}
       <Tabs.Screen
         name="aibuddy"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
-          <View style={styles.aibuddyIconWrapper}>
-            <FontAwesome name="paw" size={45} color="white" />
-          </View>
-        ),
+          tabBarIcon: ({ color }) => (
+            <View style={styles.aibuddyIconWrapper}>
+              <FontAwesome name="paw" size={45} color="white" />
+            </View>
+          ),
         }}
       />
-
       <Tabs.Screen
         name="calendar"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <Entypo name="calendar" size={30} color={color} />
           ),
         }}
@@ -61,7 +60,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: '',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={32} color={color} />
           ),
         }}
@@ -76,6 +75,7 @@ const styles = StyleSheet.create({
     height: 70,
     paddingBottom: 5,
     paddingTop: 10,
+    zIndex: 100,
   },
   tabBarLabel: {
     fontFamily: 'PlusJakartaSans-Medium',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: themes.light.button1,
     alignItems: 'center',
     height: 70,
-    width: 70,  
+    width: 70,
     padding: 10,
     borderRadius: 50,
     marginTop: -22,

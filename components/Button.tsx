@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Add display name for better debugging
 Button.displayName = 'Button';
 
 export default Button;

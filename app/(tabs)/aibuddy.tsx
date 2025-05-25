@@ -1,6 +1,5 @@
-import AIChat from "@/components/AIChat";
-
+import Index from "../aibuddy/index";
 
 export default function AIBuddyScreen() {
-  return <AIChat />;
+  return <Index />;
 }

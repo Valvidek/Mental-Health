@@ -103,7 +103,7 @@ const ResultsScreen = () => {
 
       {/* CTA */}
       <Text style={styles.footerText}>We Can Work Together for the better you!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/calendar')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/profile')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
 

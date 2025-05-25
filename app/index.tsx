@@ -27,7 +27,6 @@ export default function WelcomeScreen() {
                 fullWidth
                 style={styles.button}
                 onPress={() => {
-                  // handle the button press here
                 }}
               />
             </Link>
@@ -39,7 +38,6 @@ export default function WelcomeScreen() {
                 fullWidth
                 style={styles.button}
                 onPress={() => {
-                  // handle the button press here
                 }}
               />
             </Link>
@@ -53,8 +51,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary, // changed from primary
-    paddingTop: 150,
+    backgroundColor: Colors.background.primary, 
   },
   content: {
     flex: 1,

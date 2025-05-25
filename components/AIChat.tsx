@@ -23,10 +23,15 @@ interface Message {
 const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
+const prepareUserInput = (input: string) => {
+  return '* * * * *';
+};
+
 const sendToGemini = async (userInput: string) => {
+  const prompt = `Та зөвхөн сэтгэл зүйн зөвлөгөө өгнө үү. Хэрэглэгчийн асуулт: ${userInput}`;
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: userInput,
+    contents: prompt,
   });
   return response.text;
 };
@@ -38,16 +43,16 @@ export default function AIChat() {
   const [input, setInput] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
-  // Хадгалах
+  // Мессеж хадгалах функц
   const saveMessages = async (msgs: Message[]) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
     } catch (e) {
-      console.error('Хадгалах үед алдаа гарлаа:', e);
+      console.error('Мессеж хадгалах үед алдаа гарлаа:', e);
     }
   };
 
-  // Ачаалах
+  // Хадгалагдсан мессежийг ачааллах
   const loadMessages = async () => {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEY);
@@ -55,7 +60,7 @@ export default function AIChat() {
         setMessages(JSON.parse(stored));
       }
     } catch (e) {
-      console.error('Ачаалах үед алдаа гарлаа:', e);
+      console.error('Мессеж ачаалах үед алдаа гарлаа:', e);
     }
   };
 
@@ -63,10 +68,11 @@ export default function AIChat() {
     loadMessages();
   }, []);
 
-  // Мессеж илгээх
+  // Мессеж илгээх үйлдэл
   const sendMessage = async () => {
     if (!input.trim()) return;
 
+    // Хэрэглэгчийн бичсэн мессежийг хадгалах
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -79,7 +85,12 @@ export default function AIChat() {
     setInput('');
 
     try {
-      const aiResponse = await sendToGemini(userMsg.text);
+      // Хэрэглэгчийн оролтыг *-аар солих жишээ
+      const preparedInput = prepareUserInput(userMsg.text);
+
+      // AI-с зөвлөгөө авах
+      const aiResponse = await sendToGemini(preparedInput);
+
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'model',
@@ -102,14 +113,14 @@ export default function AIChat() {
     }
   };
 
-  // Мессеж устгах
+  // Мессеж устгах функц
   const deleteMessage = async (id: string) => {
     const updatedMsgs = messages.filter((msg) => msg.id !== id);
     setMessages(updatedMsgs);
     await saveMessages(updatedMsgs);
   };
 
-  // Мессежийг харуулах
+  // Мессежийг жагсаалтад харуулах
   const renderItem = ({ item }: { item: Message }) => (
     <View
       style={[
@@ -144,7 +155,7 @@ export default function AIChat() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Асуух зүйлээ бичнэ үү..."
+          placeholder="tsonhoor garaad user...?"
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
@@ -158,7 +169,6 @@ export default function AIChat() {
   );
 }
 
-// CSS стиль
 const styles = StyleSheet.create({
   container: {
     flex: 1,
