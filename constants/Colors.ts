@@ -58,7 +58,8 @@ const lightTheme = {
   tabIconDefault: '#9295AB',
   tabIconSelected: '#6949FF',
   shadow: 'rgba(37, 38, 46, 0.08)',
-  border: '#E2E2E2',
+  card: '#FFFFFF', // ✅ add this
+  border: '#E0E0E0',
 };
 
 const darkTheme = {
@@ -119,6 +120,7 @@ const darkTheme = {
   tabIconDefault: '#999999',
   tabIconSelected: '#8E76FF',
   shadow: 'rgba(0, 0, 0, 0.5)',
+  card: '#1E1E1E', // ✅ add this
   border: '#333333',
 };
 

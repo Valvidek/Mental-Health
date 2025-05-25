@@ -101,19 +101,6 @@ const dailySleepHours = Array(7).fill(sleepValue);
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Sleep Quality</Text>
         <View style={styles.sleepRow}>
-          <LineChart
-            data={{
-              labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-              datasets: [{ data: sleepData.dailyHours }],
-            }}
-            width={screenWidth * 0.5}
-            height={120}
-            chartConfig={chartConfig}
-            withDots
-            withInnerLines={false}
-            bezier
-            style={{ borderRadius: 10 }}
-          />
           <View style={styles.sleepInfo}>
             <Text style={styles.sleepStat}>{sleepData.averageHours} Hours</Text>
             <Text style={styles.sleepLabel}>Quality</Text>

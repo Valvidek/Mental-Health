@@ -4,6 +4,8 @@ import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function SubscriptionScreen() {
   const router = useRouter();
@@ -38,6 +40,7 @@ export default function SubscriptionScreen() {
           style={styles.closeButton}
           onPress={() => router.back()}
         >
+          <Ionicons name="arrow-back" size={24} color={Colors.lightTheme.text.primary} />
         </TouchableOpacity>
 
         <TextSubheading style={styles.header}>Premium Pass</TextSubheading>
@@ -68,7 +71,7 @@ export default function SubscriptionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
   },
   scrollContainer: {
     padding: 16,
@@ -92,27 +95,27 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: Colors.lightTheme.border,
     marginBottom: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   planCardSelected: {
-    borderColor: Colors.primary.default,
+    borderColor: Colors.lightTheme.primary.default,
     backgroundColor: '#EFEAFF',
   },
   benefitBox: {
     width: '100%',
     padding: 16,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: Colors.lightTheme.background.secondary,
     borderRadius: 12,
     marginBottom: 10,
   },
   trialButton: {
     width: '100%',
     padding: 16,
-    backgroundColor: Colors.primary.default,
+    backgroundColor: Colors.lightTheme.primary.default,
     borderRadius: 16,
     alignItems: 'center',
     marginTop: 20,
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 12,
-    color: Colors.text.tertiary,
+    color: Colors.lightTheme.text.tertiary,
     textAlign: 'center',
   },
 });

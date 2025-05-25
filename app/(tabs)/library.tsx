@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.background.tertiary,
+    backgroundColor: Colors.lightTheme.background.tertiary,
     borderRadius: 20,
     paddingHorizontal: Layout.spacing.md,
     height: 40,
@@ -209,13 +209,13 @@ const styles = StyleSheet.create({
     height: '100%',
     fontSize: 14,
     fontFamily: 'PlusJakartaSans-Regular',
-    color: Colors.text.primary,
+    color: Colors.lightTheme.text.primary,
   },
   filterButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.background.tertiary,
+    backgroundColor: Colors.lightTheme.background.tertiary,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: Layout.spacing.sm,
@@ -228,16 +228,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: Layout.spacing.md,
     paddingVertical: Layout.spacing.xs,
     borderRadius: Layout.borderRadius.full,
-    backgroundColor: Colors.background.tertiary,
+    backgroundColor: Colors.lightTheme.background.tertiary,
   },
   selectedCategory: {
-    backgroundColor: Colors.primary.default,
+    backgroundColor: Colors.lightTheme.primary.default,
   },
   categoryText: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
   },
   selectedCategoryText: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
   },
   meditationsList: {
     padding: Layout.spacing.lg,
@@ -245,18 +245,18 @@ const styles = StyleSheet.create({
   },
   featuredCard: {
     margin: Layout.spacing.lg,
-    backgroundColor: Colors.primary.default,
+    backgroundColor: Colors.lightTheme.primary.default,
     marginTop: 0,
   },
   featuredContent: {
     padding: Layout.spacing.md,
   },
   featuredTitle: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     marginBottom: Layout.spacing.xs,
   },
   featuredText: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     opacity: 0.9,
   },
 });

@@ -87,9 +87,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     gap: Layout.spacing.md,
+
   },
   button: {
     marginBottom: Layout.spacing.sm,
+    backgroundColor: Colors.lightTheme.background.secondary,
     
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },

@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ImageStyle } from 'react-native';
 import { TextSubheading, TextCaption, TextBody } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
@@ -40,7 +40,7 @@ export default function ProgressCard({
   const animatedStyle = useAnimatedStyle(() => {
     return {
       width: width.value,
-    };
+    } as ImageStyle;
   });
 
   return (
@@ -75,21 +75,21 @@ const styles = StyleSheet.create({
   },
   valueText: {
     fontFamily: 'PlusJakartaSans-SemiBold',
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
   progressContainer: {
     height: 8,
-    backgroundColor: Colors.neutral[200],
+    backgroundColor: Colors.lightTheme.neutral[200],
     borderRadius: Layout.borderRadius.full,
     marginBottom: Layout.spacing.sm,
     overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: Colors.primary.default,
+    backgroundColor: Colors.lightTheme.primary.default,
     borderRadius: Layout.borderRadius.full,
   },
   description: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
   },
 });

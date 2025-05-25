@@ -106,7 +106,7 @@ const handleSignIn = async () => {
 
         <View style={styles.footer}>
           <TextBody>Don't have an account? </TextBody>
-          <Link href="../sign-in" asChild>
+          <Link href="../sign-up" asChild>
             <TouchableOpacity>
               <TextBody style={styles.link}>Sign Up</TextBody>
             </TouchableOpacity>
@@ -120,7 +120,7 @@ const handleSignIn = async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
   },
   backButton: {
     padding: Layout.spacing.lg,
@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.sm,
   },
   subtitle: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
     marginBottom: Layout.spacing.xl,
   },
   error: {
-    color: Colors.error.default,
+    color: Colors.lightTheme.error.default,
     marginBottom: Layout.spacing.md,
   },
   button: {
@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
     marginTop: Layout.spacing.xl,
   },
   link: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
 });

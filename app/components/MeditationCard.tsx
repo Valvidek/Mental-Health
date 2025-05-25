@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     marginBottom: Layout.spacing.xs,
   },
   duration: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     opacity: 0.9,
   },
   playButton: {

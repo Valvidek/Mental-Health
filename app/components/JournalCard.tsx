@@ -61,17 +61,17 @@ export default function JournalCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
     borderRadius: Layout.borderRadius.md,
     padding: Layout.spacing.md,
     marginBottom: Layout.spacing.md,
-    shadowColor: Colors.shadow,
+    shadowColor: Colors.lightTheme.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
     borderLeftWidth: 4,
-    borderLeftColor: Colors.primary.default,
+    borderLeftColor: Colors.lightTheme.primary.default,
   },
   header: {
     flexDirection: 'row',
@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
     fontFamily: 'PlusJakartaSans-SemiBold',
   },
   date: {
-    color: Colors.text.tertiary,
+    color: Colors.lightTheme.text.tertiary,
   },
   preview: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
     marginBottom: Layout.spacing.sm,
   },
   moodContainer: {
@@ -95,11 +95,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   moodLabel: {
-    color: Colors.text.tertiary,
+    color: Colors.lightTheme.text.tertiary,
     marginRight: Layout.spacing.xs,
   },
   mood: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
     fontFamily: 'PlusJakartaSans-Medium',
   },
 });

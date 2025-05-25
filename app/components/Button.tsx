@@ -1,21 +1,20 @@
-import { 
-  TouchableOpacity, 
-  Text, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  ActivityIndicator 
+import React from 'react';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  ActivityIndicator,
+  TouchableOpacityProps,
 } from 'react-native';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import React from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends TouchableOpacityProps {
   title: string;
-  onPress: () => void;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
   loading?: boolean;
   fullWidth?: boolean;
   style?: ViewStyle;
@@ -24,59 +23,74 @@ interface ButtonProps {
   rightIcon?: React.ReactNode;
 }
 
-const Button = React.forwardRef<TouchableOpacity, ButtonProps>(({
-  title,
-  onPress,
-  variant = 'primary',
-  size = 'md',
-  disabled = false,
-  loading = false,
-  fullWidth = false,
-  style,
-  textStyle,
-  leftIcon,
-  rightIcon,
-}: ButtonProps, ref) => {
-  const buttonStyles = [
-    styles.button,
-    styles[variant],
-    styles[`${size}Button`],
-    fullWidth && styles.fullWidth,
-    disabled && styles.disabled,
-    style,
-  ];
+const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
+  (
+    {
+      title,
+      onPress,
+      variant = 'primary',
+      size = 'md',
+      disabled = false,
+      loading = false,
+      fullWidth = false,
+      style,
+      textStyle,
+      leftIcon,
+      rightIcon,
+      ...rest
+    },
+    ref
+  ) => {
+    const buttonStyles = [
+      styles.button,
+      styles[variant],
+      styles[`${size}Button`],
+      fullWidth && styles.fullWidth,
+      (disabled || loading) && styles.disabled,
+      style,
+    ];
 
-  const textStyles = [
-    styles.text,
-    styles[`${variant}Text`],
-    styles[`${size}Text`],
-    disabled && styles.disabledText,
-    textStyle,
-  ];
+    const textStyles = [
+      styles.text,
+      styles[`${variant}Text`],
+      styles[`${size}Text`],
+      (disabled || loading) && styles.disabledText,
+      textStyle,
+    ];
 
-  return (
-    <TouchableOpacity
-      ref={ref}
-      style={buttonStyles}
-      onPress={onPress}
-      disabled={disabled || loading}
-      activeOpacity={0.7}
-    >
-      {loading ? (
-        <ActivityIndicator 
-          color={variant === 'primary' ? Colors.background.primary : Colors.primary.default} 
-          size="small" 
-        />
-      ) : (
-        <>
-          {leftIcon && <>{leftIcon}</>}
-          <Text style={textStyles}>{title}</Text>
-          {rightIcon && <>{rightIcon}</>}
-        </>
-      )}
-    </TouchableOpacity>
-  );
-});
+    return (
+      <TouchableOpacity
+        ref={ref}
+        style={buttonStyles}
+        onPress={onPress}
+        disabled={disabled || loading}
+        activeOpacity={0.7}
+        {...rest}
+      >
+        {loading ? (
+          <ActivityIndicator
+            color={
+              variant === 'primary'
+                ? Colors.lightTheme.background.primary
+                : Colors.lightTheme.primary.default
+            }
+            size="small"
+          />
+        ) : (
+          <>
+            {leftIcon && <>{leftIcon}</>}
+            <Text style={textStyles}>{title}</Text>
+            {rightIcon && <>{rightIcon}</>}
+          </>
+        )}
+      </TouchableOpacity>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+
+export default Button;
 
 const styles = StyleSheet.create({
   button: {
@@ -87,15 +101,15 @@ const styles = StyleSheet.create({
     gap: Layout.spacing.sm,
   },
   primary: {
-    backgroundColor: Colors.primary.default,
+    backgroundColor: Colors.lightTheme.primary.default,
   },
   secondary: {
-    backgroundColor: Colors.secondary.light,
+    backgroundColor: Colors.lightTheme.secondary.light,
   },
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: Colors.primary.default,
+    borderColor: Colors.lightTheme.primary.default,
   },
   ghost: {
     backgroundColor: 'transparent',
@@ -118,16 +132,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   primaryText: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
   },
   secondaryText: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
   },
   outlineText: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
   ghostText: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
   smText: {
     fontSize: 14,
@@ -145,15 +159,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   disabled: {
-    backgroundColor: Colors.neutral[300],
-    borderColor: Colors.neutral[300],
+    backgroundColor: Colors.lightTheme.neutral[300],
+    borderColor: Colors.lightTheme.neutral[300],
   },
   disabledText: {
-    color: Colors.neutral[500],
+    color: Colors.lightTheme.neutral[500],
   },
 });
-
-// Add display name for better debugging
-Button.displayName = 'Button';
-
-export default Button;

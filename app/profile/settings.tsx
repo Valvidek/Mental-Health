@@ -5,6 +5,8 @@ import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useThemeContext } from '../context/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -20,7 +22,7 @@ export default function SettingsScreen() {
     rightElement?: ReactNode
   ) => {
     const content = (
-      <View style={[styles.item, { backgroundColor: themeColors.background.secondary }]}>
+      <View style={[styles.item, { backgroundColor: themeColors.card }]}>
         <TextSubheading style={[styles.itemText, { color: themeColors.text.primary }]}>
           {title}
         </TextSubheading>
@@ -42,12 +44,17 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background.primary }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => router.back()}
+        >
+          <Ionicons name="arrow-back" size={24} color={Colors.lightTheme.text.primary} />
+        </TouchableOpacity>
         <TextCaption style={[styles.sectionTitle, { color: themeColors.text.tertiary }]}>
           Account
         </TextCaption>
         {renderItem('Login Information', () => router.back())}
         {renderItem('Collection', () => router.back())}
-        {renderItem('Privacy', () => router.back())}
         {renderItem(
           'Dark Mode',
           undefined,
@@ -78,7 +85,6 @@ export default function SettingsScreen() {
             trackColor={{ false: '#767577', true: themeColors.primary.light }}
           />
         )}
-        {renderItem('Sound effect', () => router.back())}
         {renderItem('Log Out', () => router.push('/sign-in'))}
       </ScrollView>
     </SafeAreaView>
@@ -88,6 +94,9 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
   },
   scrollContainer: {
     padding: 25,

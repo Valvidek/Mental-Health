@@ -72,7 +72,7 @@ const FocusScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: Colors.lightTheme.background.secondary,
     padding: 16,
     justifyContent: 'center',
 

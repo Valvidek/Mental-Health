@@ -126,7 +126,7 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
   },
   backButton: {
     padding: Layout.spacing.lg,
@@ -140,11 +140,11 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.sm,
   },
   subtitle: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
     marginBottom: Layout.spacing.xl,
   },
   error: {
-    color: Colors.error.default,
+    color: Colors.lightTheme.error.default,
     marginBottom: Layout.spacing.md,
   },
   button: {
@@ -156,6 +156,6 @@ const styles = StyleSheet.create({
     marginTop: Layout.spacing.xl,
   },
   link: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
 });
