@@ -13,7 +13,6 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 const screenWidth = Dimensions.get('window').width;
 
 const ResultsScreen = () => {
-  // ✅ Type assertion to safely handle string params
   const {
     q0 = '0',
     q1 = '0',
@@ -48,7 +47,7 @@ const dailySleepHours = Array(7).fill(sleepValue);
     color: (opacity = 1) => `rgba(90, 79, 207, ${opacity})`,
     labelColor: () => '#444',
     propsForBackgroundLines: {
-      strokeDasharray: '', // solid lines
+      strokeDasharray: '', 
     },
   };
 
@@ -65,7 +64,6 @@ const dailySleepHours = Array(7).fill(sleepValue);
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={styles.heading}>Results</Text>
 
-      {/* Pie Chart & Mood Analysis */}
       <View style={[styles.card, styles.rowBetween]}>
         <PieChart
           data={emotionScores.map((e) => ({
@@ -112,7 +110,7 @@ const dailySleepHours = Array(7).fill(sleepValue);
 
       {/* CTA */}
       <Text style={styles.footerText}>We Can Work Together for the better you!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/calendar')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/profile')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
     </ScrollView>

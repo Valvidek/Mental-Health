@@ -1,8 +1,8 @@
+// routes/answerRoutes.js
 const express = require('express');
 const router = express.Router();
-const { saveAnswer, getUserAnswers } = require('../controllers/answerController');
+const { saveAnswers } = require('../controllers/answerController');
 
-router.post('/', saveAnswer);
-router.get('/:userId', getUserAnswers);
+router.post('/', saveAnswers);
 
 module.exports = router;

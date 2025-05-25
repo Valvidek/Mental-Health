@@ -34,8 +34,7 @@ export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const bellScale = useSharedValue(1);
   const router = useRouter();
-
-  const LOCAL_IP = '192.168.88.92';
+const LOCAL_IP = '10.0.4.143'
   const PORT = 5000;
 
   const saveMoodToDB = async (mood: string) => {

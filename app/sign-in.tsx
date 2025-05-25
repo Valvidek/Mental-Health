@@ -6,11 +6,14 @@ import Layout from '@/constants/Layout';
 import Input from '@/app/components/Input';
 import Button from '@/app/components/Button';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LOCAL_IP = '192.168.88.92';
+const LOCAL_IP = '10.0.4.143' // 👈 IP-г өөрийнхөө дагуу солиорой
+
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
+
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -28,14 +31,14 @@ const handleSignIn = async () => {
 
   setLoading(true);
 
-    try {
-      const response = await fetch(`${baseURL}/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const response = await fetch(`${baseURL}/api/auth/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
     const data = await response.json();
 
@@ -43,7 +46,12 @@ const handleSignIn = async () => {
       throw new Error(data.error || 'Sign-in failed');
     }
 
-    // ✅ Шалгаж байна: hasAnsweredQuestions backend-аас ирэх ёстой
+    const userId = data.user?.id || data.user?._id;
+
+    if (userId) {
+      await AsyncStorage.setItem('userId', userId);
+    }
+
     const hasAnswered = data.user?.hasAnsweredQuestions;
 
     if (hasAnswered) {

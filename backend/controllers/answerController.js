@@ -1,26 +1,24 @@
+// controllers/answerController.js
 const Answer = require('../models/Answer');
 
-exports.saveAnswer = async (req, res) => {
-  try {
-    const { questionIndex, response, userId } = req.body;
-    if (questionIndex === undefined || response === undefined) {
-      return res.status(400).json({ error: 'questionIndex болон response шаардлагатай' });
-    }
+exports.saveAnswers = async (req, res) => {
+  const { userId, answers } = req.body;
 
-    const answer = new Answer({ questionIndex, response, userId });
-    await answer.save();
-    res.status(201).json({ message: 'Хариулт хадгалагдлаа', answer });
-  } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
+  if (!userId || !answers) {
+    return res.status(400).json({ message: 'userId болон answers шаардлагатай' });
   }
-};
 
-exports.getUserAnswers = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const answers = await Answer.find({ userId }).sort({ createdAt: -1 });
-    res.json(answers);
-  } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
+    const newAnswer = new Answer({
+      userId,
+      answers,
+    });
+
+    await newAnswer.save();
+
+    return res.status(201).json({ message: 'Хариулт амжилттай хадгалагдлаа' });
+  } catch (error) {
+    console.error('Хадгалах үед алдаа:', error);
+    return res.status(500).json({ message: 'Серверийн алдаа гарлаа' });
   }
 };

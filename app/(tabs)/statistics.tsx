@@ -1,96 +1,113 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList, Text, TextInput, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import { TextTitle, TextSubheading, TextBody, TextCaption, TextSmall } from '@/components/StyledText';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import MoodCard from '../components/MoodCard';
+import { moods } from '@/assets/data/Data';
 import { themes } from '@/constants/Colours';
-import { communityPosts, therapists } from '@/assets/data/mockData';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Layout from '@/constants/Layout';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MoodCard from '@/components/MoodCard';
-import MeditationCard from '@/components/MeditationCard';
-import { useState } from 'react';
-import Box from '@/components/Box';
+import { TextTitle, TextBody } from '@/app/components/StyledText';
+import { PieChart, LineChart } from 'react-native-chart-kit';
+import Box from '@/app/components/Box';
 
-import { moods, meditations, progressStats } from '@/assets/data/mockData';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
+const screenWidth = Dimensions.get('window').width;
 
+const calendar = () => {
+  const data = [
+    {
+      name: 'Anger',
+      population: 40,
+      color: themes.light.orange,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+    {
+      name: 'Joy',
+      population: 25,
+      color: themes.light.green,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+    {
+      name: 'Sadness',
+      population: 15,
+      color: themes.light.cyan,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+    {
+      name: 'Anxiety',
+      population: 10,
+      color: themes.light.indigo,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+    {
+      name: 'Neutral',
+      population: 10,
+      color: themes.light.yellow,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+    {
+      name: 'Depression',
+      population: 5,
+      color: themes.light.brown,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 12,
+    },
+  ];
 
-export default function HomeScreen() {
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const bellScale = useSharedValue(1);
+  const stats = [
+    { icon: require('@/assets/icons/lotus1.png'), value: 15 },
+    { icon: require('@/assets/icons/suitcase1.png'), value: 37 },
+    { icon: require('@/assets/icons/mission-statement 1 (1).png'), value: 5 },
+    { icon: require('@/assets/icons/high-five1.png'), value: 24 },
+  ];
 
-  const handlePressBell = () => {
-    bellScale.value = withSpring(1.2, { damping: 4 }, () => {
-      bellScale.value = withSpring(1);
-    });
-  };
+  const recommendations = [
+    {
+      id: '1',
+      title: 'Grug',
+      duration: '10 min',
+      studio: 'Dreamworks',
+      image: require('@/assets/images/mascot.png'),
+    },
+    {
+      id: '2',
+      title: 'Moana',
+      duration: '8 min',
+      studio: 'Disney',
+      image: require('@/assets/images/mascot.png'),
+    },
+    {
+      id: '3',
+      title: 'Puss',
+      duration: '12 min',
+      studio: 'Dreamworks',
+      image: require('@/assets/images/mascot.png'),
+    },
+  ];
+  const renderMoodItem = ({ item }: { item: (typeof moods)[0] }) => (
+    <MoodCard image={item.image} count={item.count} />
+  );
 
-  const router = useRouter();
-
-  const handleAddTodo = () => {
-    handlePressBell();
-    router.push('/today/todo');
-    console.log('Logged To Do',);
-  };
-
-  const handleAddToday = () => {
-    handlePressBell();
-    router.push('/today/today');
-    console.log('Logged Today',);
+  function rgba(arg0: number, arg1: number, arg2: number, $: any, arg4: { opacity: number; }): string {
+    throw new Error('Function not implemented.');
   }
 
-
-  const bellAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: bellScale.value }],
-    };
-  });
-
-  const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
-    if (item.id === '7') return null; // Skip rendering the "None" mood
-
-    return (
-      <MoodCard
-        image={item.image}
-        count={item.count}
-      />
-    );
-  };
-
-
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View>
-            <TextTitle style={styles.title}>Recorded Moods</TextTitle>
-            <View style={[styles.flex, { left: 300, position: 'absolute' }]}>
-              <TouchableOpacity
-                onPress={handlePressBell}
-                style={styles.iconButtons}
-              >
-                <FontAwesome name="search" size={23} color={themes.light.textSecondary} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={handlePressBell}
-                style={styles.iconButtons}
-              >
-                <FontAwesome5 name="share" size={21} color={themes.light.textSecondary} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-        </View>
-
-        <View style={styles.recordedMoods}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View>
+        {/* Moods */}
+        <TextTitle style={styles.statheader}>Recorded moods</TextTitle>
+        <Box style={styles.moodTrackerSection}>
           <FlatList
             data={moods}
             renderItem={renderMoodItem}
@@ -98,302 +115,369 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+            ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+          />
+        </Box>
+
+        {/* Pie Chart */}
+        <TextTitle style={styles.statheader}>Overall</TextTitle>
+        <View style={styles.container}>
+          <TextBody style={styles.title}>
+            Your anger moods have been increased drastically
+          </TextBody>
+          <PieChart
+            data={data}
+            width={screenWidth * 0.9}
+            height={220}
+            chartConfig={{
+              color: (opacity = 1) => `rgba(0, 0, 0, ${ opacity })`,
+            }}
+            accessor="population"
+            backgroundColor="transparent"
+            paddingLeft="15"
+            absolute
           />
         </View>
-        <Text style={styles.unrecorded}> unrecorded days: 0</Text>
 
-        <View style={[styles.section, { marginTop: -20 }]}>
-          <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Overall</TextTitle>
-          </View>
-          <Box style={styles.overallMoods}>
-            <View style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-              <Text style={styles.moodText}>Your anger moods have been increased drastically</Text>
+        {/* Sleep Quality */}
+        <TextTitle style={styles.statheader}>Sleep Quality</TextTitle>
+        <View style={styles.sleepContainer}>
+          <View style={styles.sleepChartWrapper}>
+            <View style={styles.faceColumn}>
+              <Image
+                source={require('@/assets/icons/happy1.png')}
+                style={styles.faceIcon}
+              />
+              <Image
+                source={require('@/assets/icons/meh1.png')}
+                style={styles.faceIcon}
+              />
+              <Image
+                source={require('@/assets/icons/mad1.png')}
+                style={styles.faceIcon}
+              />
             </View>
-          </Box>
-        </View>
-
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Sleep Quality</TextTitle>
+            <LineChart
+              data={{
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                  {
+                    data: [6.5, 7.0, 6.9, 7.5, 7.2, 7.8, 7.25],
+                    strokeWidth: 8, // илүү тод шугам
+                  },
+                ],
+              }}
+              width={screenWidth * 0.5}
+              height={120}
+              withDots={true}
+              withInnerLines={true}
+              withHorizontalLines={true}
+              withVerticalLines={true}
+              withOuterLines={true}
+              chartConfig={{
+                backgroundColor: '#FFFFFF',
+                backgroundGradientFrom: '#FFFFFF',
+                backgroundGradientTo: '#FFFFFF',
+                color: (opacity = 1) => `rgba(148, 183, 108, ${ opacity })`,
+                labelColor: (opacity = 1) => `rgba(148, 183, 108, ${ opacity })`,
+                propsForBackgroundLines: {
+                  stroke: '#E5E5E5',
+                  strokeDasharray: '', 
+                },
+              }}
+              bezier
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: 10,
+                marginLeft: -10,
+              }}
+            />
           </View>
-          <Box style={styles.sleepQuality}>
-            <Text></Text>
-          </Box>
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Recorded Main Focuses</TextTitle>
+          <View style={styles.sleepInfo}>
+            <Text style={styles.sleepLabel}>Average hours</Text>
+            <Text style={styles.sleepValue}>7.25</Text>
+            <Text style={styles.sleepLabel}>Quality</Text>
+            <Text style={styles.sleepQuality}>Mostly good</Text>
+            <Text style={styles.sleepComment}>
+              Your sleep is good!{'\n'}Keep it up!
+            </Text>
           </View>
-          <TextTitle style={styles.title}>Comparison</TextTitle>
-          <Box style={styles.tips}>
-            <Text>How to set boundaries...</Text>
-          </Box>
         </View>
 
-        <View style={styles.featuredSection}>
-          <TextTitle style={styles.title}>Connect with Therapists</TextTitle>
+        <TextTitle style={styles.statheader}>Recorder Main Focuses</TextTitle>
+        <View style={styles.row}>
+          {stats.map((item, index) => (
+            <View key={index} style={styles.card}>
+              <Image source={item.icon} style={styles.icon} />
+              <Text style={styles.value}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
 
+        <View style={styles.supportContainer}>
+          <View style={styles.bubbleWrapper}>
+            <View style={styles.bubble}>
+              <TextTitle style={styles.bubbleText}>
+                Have you been frustrated lately?
+              </TextTitle>
+              <TextTitle style={styles.bubbleText}>
+                It’s okay! We can work it out!
+              </TextTitle>
+            </View>
+            <View style={styles.bubbleArrow} />
+          </View>
+
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require('@/assets/images/mascot.png')}
+              style={styles.suppimage}
+            />
+          </View>
+        </View>
+        <TextBody style={styles.statheader}>Recomendation</TextBody>
+        <View style={styles.recommendList}>
           <FlatList
-            data={therapists}
+            data={recommendations}
+            keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.therapistsList}
-            ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+            contentContainerStyle={styles.recommendList}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.therapistCard}>
-                <Image
-                  source={{ uri: item.imageUrl }}
-                  style={styles.therapistImage}
-                />
-                <View style={styles.therapistInfo}>
-                  <TextCaption style={styles.therapistName} numberOfLines={1}>
-                    {item.name}
-                  </TextCaption>
-                  <TextSmall style={styles.therapistSpecialty} numberOfLines={1}>
-                    {item.specialty}
-                  </TextSmall>
-                  <View style={styles.rating}>
-                    <TextSmall style={styles.ratingText}>★ {item.rating}</TextSmall>
-                  </View>
+              <View style={styles.recommendCard}>
+                <View style={styles.recommendTextContainer}>
+                  <Text style={styles.recommendTitle}>{item.title}</Text>
+                  <Text style={styles.recommendSubtitle}>{item.duration}</Text>
+                  <Text style={styles.recommendSubtitle}>{item.studio}</Text>
                 </View>
-              </TouchableOpacity>
+                <Image source={item.image} style={styles.recommendImage} />
+                <TouchableOpacity style={styles.recommendPlayButton}>
+                  <Text style={styles.recommendPlayIcon}>▶️</Text>
+                </TouchableOpacity>
+              </View>
             )}
           />
         </View>
-
-
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: themes.light.background,
-    flex: 1,
+  recommendList: {
+    paddingHorizontal: 16,
   },
-  dateContainer: {
-    top: 45,
-    width: 55,
-    height: 20,
-    alignItems: 'center',
-    borderRadius: 10,
-    position: 'relative',
-    backgroundColor: themes.light.textPrimary,
-  },
-  unrecorded: {
-    color: themes.light.textPrimary,
-    position: 'absolute',
-    fontSize: 13,
-    top: 190,
-    marginLeft: 260,
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 20,
-    marginTop: 10,
-  },
-  featuredSection: {
-    paddingTop: Layout.spacing.lg,
-    paddingHorizontal: Layout.spacing.lg,
-  },
-  focusIcon: {
-    height: 40,
-    width: 40,
-    position: 'absolute',
-    top: 25,
-    left: 310,
-  },
-  therapistsList: {
-    paddingBottom: Layout.spacing.lg,
-  },
-  therapistCard: {
-    width: 150,
-    borderRadius: Layout.borderRadius.md,
-    overflow: 'hidden',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  therapistImage: {
-    width: '100%',
+  recommendCard: {
+    width: screenWidth * 0.6,
     height: 100,
-    resizeMode: 'cover',
-  },
-  therapistInfo: {
-    padding: Layout.spacing.sm,
-  },
-  therapistName: {
-    fontFamily: 'PlusJakartaSans-SemiBold',
-  },
-  therapistSpecialty: {
-    marginBottom: Layout.spacing.xs,
-  },
-  rating: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    marginRight: 16,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ratingText: {
-  },
-  greatfulInput: {
-    height: 50,
-    width: '100%',
-    backgroundColor: themes.light.box,
-    borderRadius: 10,
-    paddingHorizontal: Layout.spacing.md,
-    color: themes.light.textPrimary,
-    shadowColor: themes.light.textPrimary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  header: {
-    paddingHorizontal: Layout.spacing.lg,
-    paddingVertical: Layout.spacing.md,
-  },
-  iconButtons: {},
-  icons: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    top: 10,
-    left: 15,
-  },
-  line: {
-    width: 4,
-    height: 70,
-    backgroundColor: '#D4D3DF',
-    borderRadius: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    zIndex: 0,
     position: 'relative',
-    left: 70,
-    top: -25,
   },
-  magicBall: {
-    width: 50,
-    height: 50,
-    position: 'absolute',
-    top: 70,
-    left: 310,
+  recommendTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  meditation: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 20,
+  recommendTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  recommendSubtitle: {
+    fontSize: 12,
+    color: '#777',
+  },
+  recommendImage: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+    marginLeft: 10,
+  },
+  recommendPlayButton: {
+    backgroundColor: '#9F7AEA',
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+  recommendPlayIcon: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  moodTrackerSection: {
+    margin: 20,
   },
   moodList: {
-    paddingVertical: Layout.spacing.md,
+    paddingHorizontal: 20,
   },
-  recordedMoods: {
-    width: 370,
-    height: 150,
+  statheader: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 20,
     marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
+    marginBottom: 20,
   },
-  plusIcon: {
-    left: 120,
-    top: 60,
-    position: 'absolute',
-    borderRadius: 10,
-    padding: 5,
-    marginLeft: 20,
-  },
-  section: {
-    paddingHorizontal: Layout.spacing.lg,
-    marginBottom: Layout.spacing.lg,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  container: {
+    paddingTop: 20,
     alignItems: 'center',
-    marginBottom: Layout.spacing.md,
-  },
-  sectionTitle: {},
-  tips: {
-    height: 150,
-    width: '100%',
+    backgroundColor: '#fff',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 16,
+    padding: 10,
+    elevation: 2,
   },
   title: {
-    color: themes.light.textPrimary,
     fontSize: 16,
-    marginTop: 10,
+    marginBottom: 10,
+    color: '#333',
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
-  TodayInput: {
-    position: 'absolute',
-    fontSize: 13,
-    zIndex: 1,
-    left: 100,
+  sleepContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 10,
+    marginHorizontal: 20,
+    marginBottom: 40,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 2,
+    shadowColor: '#ccc',
   },
-  overallMoods: {
-    height: 200,
-    width: '100%',
-  },
-  moodText: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    color: themes.light.textPrimary,
-  },
-  todaysMood: {
-    height: 80,
-    width: '100%',
-    backgroundColor: themes.light.box,
-    borderRadius: 10,
-    shadowColor: themes.light.textPrimary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  trackButton: {
-    marginTop: Layout.spacing.md,
-  },
-  viewAllButton: {
+  sleepChartWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
-  viewAllText: {
-    marginRight: Layout.spacing.xs,
+  faceColumn: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 100,
+    marginRight: 10,
+    marginBottom: 20,
   },
-  wisdomBox: {
-    height: 125,
-    width: 370,
-    backgroundColor: themes.light.textSecondary,
+  faceIcon: {
+    width: 30,
+    height: 30,
+    marginVertical: 6,
   },
-  wisdomDate: {
-    color: themes.light.accent,
+  sleepInfo: {
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  sleepLabel: {
+    fontSize: 12,
+    color: '#888',
+  },
+  sleepValue: {
+    fontSize: 18,
     fontWeight: 'bold',
-    fontSize: 15,
-  },
-  wisdomText: {
-    width: 250,
-    color: themes.light.box,
-    fontWeight: 'bold',
-    fontSize: 15,
-    marginTop: 10,
+    marginBottom: 6,
   },
   sleepQuality: {
-    width: '100%',
-    height: 120,
-    marginRight: 20,
-    borderRadius: 10,
-  }
+    fontSize: 14,
+    color: '#4CAF50',
+    marginBottom: 6,
+  },
+  sleepComment: {
+    fontSize: 12,
+    color: '#666',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 40,
+  },
+  card: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#FFFFFF',
+
+  borderRadius: 16,
+  alignItems: 'center',
+  justifyContent: 'center',
+  elevation: 3,
+  shadowColor: '#000000',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.1,
+  shadowRadius: 2,
+},
+  icon: {
+  width: 32,
+  height: 32,
+  marginBottom: 8,
+  resizeMode: 'contain',
+},
+  value: {
+  fontSize: 16,
+  fontWeight: '600',
+  color: '#333',
+},
+  supportContainer: {
+  alignItems: 'center',
+  paddingTop: 20,
+  width: '100%',
+},
+  bubbleWrapper: {
+  alignItems: 'center',
+  marginBottom: -10,
+},
+  bubble: {
+  backgroundColor: '#9F7AEA',
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+  borderRadius: 20,
+  width: 350,
+  height: 100,
+},
+  bubbleText: {
+  color: '#FFFFFF',
+  fontSize: 14,
+  textAlign: 'center',
+},
+  bubbleArrow: {
+  width: 0,
+  height: 0,
+  borderLeftWidth: 20,
+  borderRightWidth: 20,
+  borderTopWidth: 20,
+  borderLeftColor: 'transparent',
+  borderRightColor: 'transparent',
+  transform: [{ rotate: '-135deg' }],
+  borderTopColor: '#9F7AEA',
+  marginTop: -4,
+  marginLeft: -150,
+  borderRadius: 8,
+},
+  imageWrapper: {
+  height: 250,
+  overflow: 'hidden',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+},
+
+  suppimage: {
+  width: 500,
+  height: 500,
+  resizeMode: 'contain',
+  marginTop: -50,
+},
 });
+
+export default calendar;

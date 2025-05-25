@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import FirstScreen from '../aibuddy/FirstScreen';
-import SecondScreen from '../../components/AIChat';
+import SecondScreen from '../components/AIChat';
 import ThirdScreen from '../aibuddy/ThirdScreen';
 
 type ScreenType = 'first' | 'second' | 'third' | null;

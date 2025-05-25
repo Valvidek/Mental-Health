@@ -38,7 +38,7 @@ export default function App() {
     { label: 'Community', Image: require('../../assets/icons/high-five1.png') },
   ];
 
-  const LOCAL_IP = '192.168.88.92'; // Серверийн IP-г зөв тохируулна уу
+  const LOCAL_IP = '10.0.4.143'
   const baseURL = Platform.OS === 'web' ? 'http://localhost:5000' : `http://${LOCAL_IP}:5000`;
 
   const getSleepQualityLabel = (value: number) => {

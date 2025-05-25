@@ -32,7 +32,16 @@ exports.signin = async (req, res) => {
       return res.status(401).json({ error: 'Имэйл эсвэл нууц үг буруу' });
     }
 
-    res.json({ message: 'Амжилттай нэвтэрлээ', user: { name: user.name, email: user.email } });
+    // Нэвтэрсэн хэрэглэгчийн ID-г буцаана
+    res.json({
+      message: 'Амжилттай нэвтэрлээ',
+      user: {
+        id: user._id, // ✅ id-г оруулж байна
+        name: user.name,
+        email: user.email
+      }
+    });
+
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа' });
   }

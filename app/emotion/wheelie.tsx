@@ -31,7 +31,7 @@ const EmotionWheel = () => {
   };
 
   const handleNavigate = () => {
-    router.push('/emotion/sleep');
+    router.push('/emotion/todayfocus');
   };
 
   return (

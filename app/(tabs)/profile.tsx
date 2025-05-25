@@ -8,18 +8,8 @@ import {
 } from 'react-native';
 import React, { ReactNode } from 'react';
 import { useRouter } from 'expo-router';
-import { TextCaption, TextSubheading } from '@/components/StyledText';
-import {
-  ChevronRight,
-  BookUser,
-  Calendar,
-  ShieldCheck,
-  BellRing,
-  Settings,
-  HelpCircle,
-  Crown,
-} from 'lucide-react-native';
-import Card from '@/components/Card';
+import { TextCaption, TextSubheading } from '@/app/components/StyledText';
+import Card from '@/app/components/Card';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,17 +17,34 @@ import { useThemeContext } from '../context/ThemeContext';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { darkMode } = useThemeContext();
+  const themeColors = darkMode ? Colors.darkTheme : Colors.lightTheme;
 
-  const renderMenuItem = (icon: React.ReactNode, title: string, route?: string) => (
-    <TouchableOpacity
-      style={styles.menuItem}
-      onPress={() => route && router.back()}
-    >
-      <View style={styles.menuIcon}>{icon}</View>
-      <TextCaption style={styles.menuText}>{title}</TextCaption>
-      <ChevronRight size={20} color={Colors.text.tertiary} />
-    </TouchableOpacity>
-  );
+  const renderItem = (
+      title: string,
+      onPress?: () => void,
+      rightElement?: ReactNode
+    ) => {
+      const content = (
+        <View style={[styles.item, { backgroundColor: themeColors.card }]}>
+          <TextSubheading style={[styles.itemText, { color: themeColors.text.primary }]}>
+            {title}
+          </TextSubheading>
+          {rightElement ?? <View />}
+        </View>
+      );
+  
+      if (onPress) {
+        return (
+          <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+            {content}
+          </TouchableOpacity>
+        );
+      }
+  
+      return content;
+    };
+  
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background.primary }]}>
@@ -49,9 +56,16 @@ export default function ProfileScreen() {
         <View style={[styles.userCard, { backgroundColor: themeColors.card }]}>
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
-            <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/user')}>
-              <TextCaption style={styles.username}>User</TextCaption>
-              <TextCaption>ID: 154654254545</TextCaption>
+            <TouchableOpacity
+              style={styles.userDetails}
+              onPress={() => router.push('../profile/user')}
+            >
+              <TextCaption style={[styles.username, { color: themeColors.text.primary }]}>
+                N/A
+              </TextCaption>
+              <TextCaption style={{ color: themeColors.text.secondary }}>
+                ID: loading
+              </TextCaption>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => router.push('../profile/settings')}>
@@ -98,8 +112,7 @@ export default function ProfileScreen() {
           </View>
           <Image source={require('@/assets/images/mascot.png')} style={styles.mascotImage} />
         </TouchableOpacity>
-
-        {/* Menu Items */}
+{/* Menu Items */}
         {renderItem('Achievments', () => router.push('/'))}
 
         <TextCaption style={[styles.sectionLabel, { marginTop: 10, color: themeColors.text.secondary }]}>

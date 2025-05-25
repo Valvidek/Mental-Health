@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const AccountScreen: React.FC = () => {
+
+const UserProfileScreen: React.FC = () => {
   const router = useRouter();
 
   return (
@@ -16,7 +17,7 @@ const AccountScreen: React.FC = () => {
         </View>
         {/* User info */}
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>User Name</Text>
+          <Text style={styles.userName}>N/A</Text>
           <Text style={styles.userDetails}>March 1, 2006</Text>
         </View>
       </View>
@@ -66,22 +67,18 @@ const AccountScreen: React.FC = () => {
   );
 };
 
-export default AccountScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: '#fff',
   },
   contentContainer: {
-    padding: 25,
-    paddingBottom: 100,
-    
+    padding: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
   },
   avatarContainer: {
     marginRight: 16,
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: Colors.primary.default,
+    backgroundColor: '#FFA500', // Orange, or replace with your avatar image
   },
   userInfo: {
     flex: 1,
@@ -98,17 +95,17 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: Colors.text.primary,
+    color: '#222',
   },
   userDetails: {
     fontSize: 14,
-    color: Colors.text.secondary,
+    color: '#555',
     marginTop: 4,
   },
   statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 24,
+    justifyContent: 'space-around',
+    marginVertical: 20,
   },
   statBox: {
     alignItems: 'center',
@@ -117,30 +114,29 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.text.primary,
+    color: '#222',
   },
   statLabel: {
     marginTop: 4,
     fontSize: 12,
-    color: Colors.text.tertiary,
+    color: '#555',
   },
   section: {
-    marginTop: 24,
-    marginBottom: 16,
+    marginVertical: 20,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     marginBottom: 10,
-    color: Colors.text.primary,
+    color: '#222',
   },
   aboutMeText: {
     fontSize: 14,
-    color: Colors.text.secondary,
+    color: '#444',
     lineHeight: 20,
   },
   achievementsContainer: {
-    marginTop: 24,
+    marginVertical: 20,
   },
   achievementCards: {
     flexDirection: 'row',
@@ -154,19 +150,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: '#E0E0E0', // Placeholder, replace with badge image background if needed
     marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
   },
   badgeText: {
     fontSize: 14,
     fontWeight: '500',
     textAlign: 'center',
-    color: Colors.text.primary,
+    color: '#222',
   },
 });
 export default UserProfileScreen;

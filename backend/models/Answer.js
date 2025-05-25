@@ -1,9 +1,10 @@
+// models/Answer.js
 const mongoose = require('mongoose');
 
-const AnswerSchema = new mongoose.Schema({
-  questionIndex: Number,
-  response: String,
-  userId: String,
-}, { timestamps: true });
+const answerSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  answers: { type: Map, of: Number },
+  createdAt: { type: Date, default: Date.now },
+});
 
-module.exports = mongoose.model('Answer', AnswerSchema);
+module.exports = mongoose.model('Answer', answerSchema);
