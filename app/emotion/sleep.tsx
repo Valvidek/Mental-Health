@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import Slider from '@react-native-community/slider'; // Native slider
 import { useLocalSearchParams } from 'expo-router';
 
@@ -10,11 +10,11 @@ const Sleep: React.FC = () => {
 
   const [value, setValue] = useState<number>(5);
   const router = useRouter();
+  const searchParams = useLocalSearchParams();
 
   const handleNext = (): void => {
-  router.push(`/emotion/todayfocus?sleep=${value}&mood=${mood}`);
-};
-
+    router.push(`/emotion/todayfocus?sleep=${value}`);
+  };
 
   const getColor = (): string => {
     if (value <= 3) return 'red';
@@ -33,6 +33,7 @@ const Sleep: React.FC = () => {
     if (value <= 7) return sleepIcons.neutral;
     return sleepIcons.good;
   };
+  
 
   return (
     <View style={styles.container}>

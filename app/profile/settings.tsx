@@ -1,15 +1,20 @@
 import React, { useState, ReactNode } from 'react';
 import { View, Switch, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { TextSubheading, TextCaption } from '@/components/StyledText';
-import { ChevronRight } from 'lucide-react-native';
+import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useThemeContext } from '../context/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function SettingsScreen() {
   const router = useRouter();
   const [dailyReminder, setDailyReminder] = useState(true);
-  const [hideFromRanking, setHideFromRanking] = useState(false);
+  const { darkMode, setDarkMode } = useThemeContext();
+
+  // Select colors based on darkMode
+  const themeColors = darkMode ? Colors.darkTheme : Colors.lightTheme;
 
   const renderItem = (
     title: string,
@@ -17,9 +22,11 @@ export default function SettingsScreen() {
     rightElement?: ReactNode
   ) => {
     const content = (
-      <View style={styles.item}>
-        <TextSubheading style={styles.itemText}>{title}</TextSubheading>
-        {rightElement ?? <ChevronRight size={20} color={Colors.text.tertiary} />}
+      <View style={[styles.item, { backgroundColor: themeColors.card }]}>
+        <TextSubheading style={[styles.itemText, { color: themeColors.text.primary }]}>
+          {title}
+        </TextSubheading>
+        {rightElement ?? <View />}
       </View>
     );
 
@@ -35,40 +42,49 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background.primary }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <TextCaption style={styles.sectionTitle}>Account</TextCaption>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => router.back()}
+        >
+          <Ionicons name="arrow-back" size={24} color={Colors.lightTheme.text.primary} />
+        </TouchableOpacity>
+        <TextCaption style={[styles.sectionTitle, { color: themeColors.text.tertiary }]}>
+          Account
+        </TextCaption>
         {renderItem('Login Information', () => router.back())}
         {renderItem('Collection', () => router.back())}
-        {renderItem('Privacy', () => router.back())}
-
-        <TextCaption style={styles.sectionTitle}>Subscription</TextCaption>
-        {renderItem('Restore Purchases', () => router.back())}
-        {renderItem('Cancel Subscription', () => router.back())}
-
-        <TextCaption style={styles.sectionTitle}>Social and Friend</TextCaption>
-        {renderItem('Blocked Users', () => router.back())}
         {renderItem(
-          'Hide from Global Ranking',
+          'Dark Mode',
           undefined,
           <Switch
-            value={hideFromRanking}
-            onValueChange={setHideFromRanking}
-            thumbColor={hideFromRanking ? Colors.primary.default : '#f4f3f4'}
+            value={darkMode}
+            onValueChange={setDarkMode}
+            thumbColor={darkMode ? themeColors.primary.default : '#f4f3f4'}
+            trackColor={{ false: '#767577', true: themeColors.primary.light }}
           />
         )}
 
-        <TextCaption style={styles.sectionTitle}>Notification</TextCaption>
+        <TextCaption style={[styles.sectionTitle, { color: themeColors.text.tertiary }]}>
+          Subscription
+        </TextCaption>
+        {renderItem('Restore Purchases', () => router.back())}
+        {renderItem('Cancel Subscription', () => router.back())}
+
+        <TextCaption style={[styles.sectionTitle, { color: themeColors.text.tertiary }]}>
+          Notification
+        </TextCaption>
         {renderItem(
           'Daily Reminder',
           undefined,
           <Switch
             value={dailyReminder}
             onValueChange={setDailyReminder}
-            thumbColor={dailyReminder ? Colors.primary.default : '#f4f3f4'}
+            thumbColor={dailyReminder ? themeColors.primary.default : '#f4f3f4'}
+            trackColor={{ false: '#767577', true: themeColors.primary.light }}
           />
         )}
-        {renderItem('Sound effect', () => router.back())}
         {renderItem('Log Out', () => router.push('/sign-in'))}
       </ScrollView>
     </SafeAreaView>
@@ -78,7 +94,9 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
   },
   scrollContainer: {
     padding: 25,
@@ -87,7 +105,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginTop: 24,
     marginBottom: 8,
-    color: Colors.text.tertiary,
     fontWeight: '600',
   },
   item: {
@@ -96,7 +113,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     paddingHorizontal: 12,
-    backgroundColor: Colors.background.secondary,
     borderRadius: 16,
     marginBottom: 10,
     shadowColor: '#000',
@@ -106,6 +122,6 @@ const styles = StyleSheet.create({
     elevation: 2, // Android
   },
   itemText: {
-    fontSize: 14, // Smaller than default
+    fontSize: 14,
   },
 });

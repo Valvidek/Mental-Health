@@ -1,0 +1,59 @@
+export const meditations = [
+  {
+    id: '1',
+    title: 'Morning Calm',
+    description: 'Start your day with clarity and peace',
+    duration: '10 min',
+    imageUrl: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'Mindfulness',
+    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+  },
+
+  {
+    id: '2',
+    title: 'Anxiety Relief',
+    description: 'Guided breathing to reduce anxiety',
+    duration: '15 min',
+    imageUrl: 'https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'Anxiety',
+    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+  },
+
+  {
+    id: '3',
+    title: 'Deep Sleep',
+    description: 'Fall asleep faster and improve sleep quality',
+    duration: '20 min',
+    imageUrl: 'https://images.pexels.com/photos/355887/pexels-photo-355887.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'Sleep',
+  },
+
+  {
+    id: '4',
+    title: 'Focus & Clarity',
+    description: 'Enhance your concentration and mental clarity',
+    duration: '12 min',
+    imageUrl: 'https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'Minfulness',
+  },
+
+  {
+    id: '5',
+    title: 'Self-Compassion',
+    description: 'Cultivate kindness towards yourself',
+    duration: '18 min',
+    imageUrl: 'https://images.pexels.com/photos/3560168/pexels-photo-3560168.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'Mindfulness',
+  },
+
+  {
+    id: '6',
+    title: 'PTSD Relief',
+    description: 'Healing from trauma through guided meditation',
+    duration: '30 min',
+    imageUrl: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'PTSD',
+    youtubeURL: 'https://www.youtube.com/embed/ly36kn0ug4k?si=BixNrScIrvehOUjM',
+  },
+  
+];

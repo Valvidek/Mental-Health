@@ -5,35 +5,49 @@ import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import { themes } from '@/constants/Colours';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 import Animated, { 
   useAnimatedStyle, 
   withTiming, 
   useSharedValue, 
   withSequence, 
 } from 'react-native-reanimated';
+import { router } from 'expo-router';
 
 interface MeditationCardProps {
   title: string;
   duration: string;
   imageUrl: string;
-  youtubeUrl: string; // YouTube URL
+  youtubeURL: string; 
 }
+
 
 export default function MeditationCard({ 
   title, 
   duration, 
   imageUrl, 
-  youtubeUrl 
+  youtubeURL 
 }: MeditationCardProps) {
   const scale = useSharedValue(1);
+
+  const navigation = useNavigation();
 
   const handlePress = () => {
     scale.value = withSequence(
       withTiming(0.98, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
-    Linking.openURL(youtubeUrl);
+    
   };
+
+const handleAddvideo = () => {
+  handlePress();
+  router.push({
+    pathname: '/components/screens/YouTubePlayerScreen',
+    params: { videoUrl: youtubeURL },
+  });
+};
+
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -42,7 +56,7 @@ export default function MeditationCard({
   });
 
   return (
-    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
+    <TouchableOpacity onPress={handleAddvideo} activeOpacity={0.9}>
       <Animated.View style={[styles.card, animatedStyle]}>
         <ImageBackground
           source={{ uri: imageUrl }}
@@ -99,11 +113,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     marginBottom: Layout.spacing.xs,
   },
   duration: {
-    color: Colors.background.primary,
+    color: Colors.lightTheme.background.primary,
     opacity: 0.9,
   },
   playButton: {

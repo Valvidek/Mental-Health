@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import { TextTitle } from '@/components/StyledText';
+import { TextTitle } from '@/app/components/StyledText';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { themes } from '@/constants/Colours';
@@ -17,16 +17,18 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Layout from '@/constants/Layout';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MoodCard from '@/components/MoodCard';
-import MeditationCard from '@/components/MeditationCard';
+import MoodCard from '@/app/components/MoodCard';
+import MeditationCard from '@/app/components/MeditationCard';
 import { useState } from 'react';
-import Box from '@/components/Box';
-import { moods } from '@/assets/data/mockData';
+import Box from '@/app/components/Box';
+import { moods } from '@/assets/data/Data';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import StreakTracker from '../components/StreakTracker';
+import QuoteCard from '../components/QuoteCard';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -62,11 +64,6 @@ export default function HomeScreen() {
     router.push('/emotion/wheelie');
   };
 
-  const handleAddTodo = () => {
-    handlePressBell();
-    router.push('/today/todo');
-  };
-
   const handleAddToday = () => {
     handlePressBell();
     router.push('/today/today');
@@ -85,29 +82,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <TextTitle style={styles.title}>Week</TextTitle>
-          <View style={styles.flex}>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <Ionicons name="notifications" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
-              <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <Box style={styles.moodTrackerSection}>
-          <FlatList
-            data={moods}
-            renderItem={renderMoodItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-          />
-        </Box>
+        <StreakTracker/>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -136,17 +111,6 @@ export default function HomeScreen() {
             <Image style={styles.focusIcon} source={require('@/assets/icons/lotus1.png')} />
           </Box>
 
-          <Box style={styles.toDoList}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={styles.Todo}>To-Do:</Text>
-              <TouchableOpacity onPress={handleAddTodo}>
-                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleAddTodo} style={styles.plusIcon}>
-                <FontAwesome5 name="plus" size={50} color={themes.light.accent} />
-              </TouchableOpacity>
-            </View>
-          </Box>
         </View>
 
         <View style={styles.section}>
@@ -166,19 +130,19 @@ export default function HomeScreen() {
                 title="Anxiety Relief"
                 duration="15 min"
                 imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png"
-                youtubeUrl="https://www.youtube.com/shorts/5MFSBMcYZTw"
+                youtubeURL="https://www.youtube.com/shorts/5MFSBMcYZTw"
               />
               <MeditationCard
                 title="Mindful Breathing"
                 duration="10 min"
                 imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
-                youtubeUrl="https://www.youtube.com/shorts/9Bqm14hCntg"
+                youtubeURL="https://www.youtube.com/shorts/9Bqm14hCntg"
               />
               <MeditationCard
                 title="Meditation for mornings"
                 duration="20 min"
                 imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg"
-                youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM"
+                youtubeURL="https://www.youtube.com/watch?v=lEKDob0LwRM"
               />
             </View>
           </ScrollView>
@@ -188,15 +152,10 @@ export default function HomeScreen() {
             <Text>How to set boundaries...</Text>
           </Box>
 
-          <View style={{ alignItems: 'center', marginTop: 20 }}>
-            <Box style={styles.wisdomBox}>
-              <Text style={styles.wisdomDate}>April 15</Text>
-              <Text style={styles.wisdomText}>
-                Don’t say yes to everything - you may be reaching the burnout.
-              </Text>
-              <Image source={require('@/assets/icons/crystal-ball1.png')} style={styles.magicBall} />
-            </Box>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <QuoteCard />
           </View>
+          
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -249,8 +208,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 50,
     height: 50,
-    top: 10,
-    left: 15,
+    top: -10,
+
   },
   line: {
     width: 4,

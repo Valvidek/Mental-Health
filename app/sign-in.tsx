@@ -1,12 +1,11 @@
 import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
 import { Link, router } from 'expo-router';
-import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
+import { TextTitle, TextBody, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+import Input from '@/app/components/Input';
+import Button from '@/app/components/Button';
 import { useState } from 'react';
-import { Mail, Lock, ArrowLeft } from 'lucide-react-native';
 
 const LOCAL_IP = '192.168.88.92';
 const baseURL = Platform.OS === 'web'
@@ -19,18 +18,18 @@ export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignIn = async () => {
-    setError(null);
+const handleSignIn = async () => {
+  setError(null);
 
-    if (!email || !password) {
-      setError('Please enter both email and password');
-      return;
-    }
+  if (!email || !password) {
+    setError('Please enter both email and password');
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
     try {
-      const response = await fetch(`${baseURL}/api/auth/signin`, {
+      const response = await fetch(`${baseURL}/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,20 +37,28 @@ export default function SignInScreen() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Sign-in failed');
-      }
-
-      router.replace('/emotion/question1');
-    } catch (err: any) {
-      console.error('❌ Sign-in error:', err.message);
-      setError(err.message || 'Unable to sign in');
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error(data.error || 'Sign-in failed');
     }
-  };
+
+    // ✅ Шалгаж байна: hasAnsweredQuestions backend-аас ирэх ёстой
+    const hasAnswered = data.user?.hasAnsweredQuestions;
+
+    if (hasAnswered) {
+      router.replace('/(tabs)');
+    } else {
+      router.replace('/emotion/0');
+    }
+
+  } catch (err: any) {
+    console.error('❌ Sign-in error:', err.message);
+    setError(err.message || 'Unable to sign in');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <KeyboardAvoidingView
@@ -59,7 +66,7 @@ export default function SignInScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <ArrowLeft size={24} color={Colors.text.primary} />
+        
       </TouchableOpacity>
 
       <View style={styles.content}>
@@ -77,7 +84,7 @@ export default function SignInScreen() {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          leftIcon={<Mail size={20} color={Colors.text.tertiary} />}
+          leftIcon={""}
         />
 
         <Input
@@ -86,7 +93,7 @@ export default function SignInScreen() {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          leftIcon={<Lock size={20} color={Colors.text.tertiary} />}
+          leftIcon={""}
         />
 
         <Button
@@ -112,7 +119,7 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
   },
   backButton: {
     padding: Layout.spacing.lg,
@@ -126,11 +133,11 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.sm,
   },
   subtitle: {
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
     marginBottom: Layout.spacing.xl,
   },
   error: {
-    color: Colors.error.default,
+    color: Colors.lightTheme.error.default,
     marginBottom: Layout.spacing.md,
   },
   button: {
@@ -142,6 +149,6 @@ const styles = StyleSheet.create({
     marginTop: Layout.spacing.xl,
   },
   link: {
-    color: Colors.primary.default,
+    color: Colors.lightTheme.primary.default,
   },
 });

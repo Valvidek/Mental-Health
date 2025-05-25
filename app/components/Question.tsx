@@ -7,23 +7,21 @@ import {
   SafeAreaView,
   useWindowDimensions,
 } from 'react-native';
-import { colors, responses } from '../constants/questions';
-import { RelativePathString, useRouter } from 'expo-router';
+import { colors, responses } from '../../constants/questions';
 
 interface Props {
   question: string;
   questionIndex: number;
-  onNextRoute: string;
+  onNext: (selectedValue: number) => void;
 }
 
-const Question: React.FC<Props> = ({ question, questionIndex, onNextRoute }) => {
-  const router = useRouter();
+const Question: React.FC<Props> = ({ question, questionIndex, onNext }) => {
   const [selected, setSelected] = React.useState<number | null>(null);
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
-  const progressPercent = ((questionIndex + 1) / 4) * 100;
+  const progressPercent = ((questionIndex + 1) / 8) * 100;
   const paddingHorizontal = width * 0.06;
-  const circleSize = Math.min(width * 0.08, 36); // scale but limit to max size
+  const circleSize = Math.min(width * 0.08, 36);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F6F4FB' }}>
@@ -73,7 +71,7 @@ const Question: React.FC<Props> = ({ question, questionIndex, onNextRoute }) => 
 
         {/* Continue Button */}
         <TouchableOpacity
-          onPress={() => router.push(onNextRoute as RelativePathString)}
+          onPress={() => selected != null && onNext(selected)}
           style={[
             styles.button,
             { marginHorizontal: width * 0.1 },

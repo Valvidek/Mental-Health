@@ -27,10 +27,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="statistics"
+        name="library"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color, size }) => (
             <FontAwesome6 name="chart-simple" size={30} color={color} />
           ),
         }}
@@ -40,18 +40,18 @@ export default function TabLayout() {
         name="aibuddy"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => (
-            <View style={styles.aibuddyIconWrapper}>
-              <FontAwesome name="paw" size={45} color="white" />
-            </View>
-          ),
+          tabBarIcon: ({ color, size }) => (
+          <View style={styles.aibuddyIconWrapper}>
+            <FontAwesome name="paw" size={45} color="white" />
+          </View>
+        ),
         }}
       />
       <Tabs.Screen
-        name="calendar"
+        name="statistics"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color, size }) => (
             <Entypo name="calendar" size={30} color={color} />
           ),
         }}
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     height: 70,
     paddingBottom: 5,
     paddingTop: 10,
-    zIndex: 100,
   },
   tabBarLabel: {
     fontFamily: 'PlusJakartaSans-Medium',

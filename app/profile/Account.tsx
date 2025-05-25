@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import Colors from '@/constants/Colors';
 
 const AccountScreen: React.FC = () => {
   const router = useRouter();
@@ -17,7 +16,7 @@ const AccountScreen: React.FC = () => {
         </View>
         {/* User info */}
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>Mentos</Text>
+          <Text style={styles.userName}>User Name</Text>
           <Text style={styles.userDetails}>March 1, 2006</Text>
         </View>
       </View>
@@ -170,3 +169,4 @@ const styles = StyleSheet.create({
     color: Colors.text.primary,
   },
 });
+export default UserProfileScreen;

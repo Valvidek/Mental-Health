@@ -1,9 +1,9 @@
 import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { TextTitle, TextBody } from '@/components/StyledText';
+import { TextTitle, TextBody } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import Button from '@/components/Button';
+import Button from '@/app/components/Button';
 
 export default function WelcomeScreen() {
   return (
@@ -51,7 +51,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary, 
+    backgroundColor: Colors.background.primary, // changed from primary
   },
   content: {
     flex: 1,
@@ -72,23 +72,25 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    color: Colors.text.primary,
+    
     fontSize: 36,
     marginBottom: Layout.spacing.sm,
     textAlign: 'center',
   },
   subtitle: {
-    color: Colors.text.secondary,
+    
     marginBottom: Layout.spacing.xl,
     textAlign: 'center',
   },
   buttonContainer: {
     width: '100%',
     gap: Layout.spacing.md,
+
   },
   button: {
     marginBottom: Layout.spacing.sm,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: Colors.lightTheme.background.secondary,
+    
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,

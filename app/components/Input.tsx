@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TextCaption, TextSmall } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import { Eye, EyeOff } from 'lucide-react-native';
+
 
 interface InputProps {
   label?: string;
@@ -62,12 +62,10 @@ export default function Input({
           style={[
             styles.input,
             multiline && styles.multiline,
-            leftIcon && styles.inputWithLeftIcon,
-            (rightIcon || secureTextEntry) && styles.inputWithRightIcon,
             inputStyle,
           ]}
           placeholder={placeholder}
-          placeholderTextColor={Colors.text.tertiary}
+          placeholderTextColor={Colors.lightTheme.text.tertiary}
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={hidePassword}
@@ -86,8 +84,8 @@ export default function Input({
             onPress={togglePasswordVisibility}
           >
             {hidePassword ? 
-              <Eye size={20} color={Colors.text.tertiary} /> : 
-              <EyeOff size={20} color={Colors.text.tertiary} />
+              <TextSmall style={{ color: Colors.lightTheme.text.secondary }}>Show</TextSmall> :
+              <TextSmall style={{ color: Colors.lightTheme.text.secondary }}>Hide</TextSmall>
             }
           </TouchableOpacity>
         ) : rightIcon ? (
@@ -106,15 +104,15 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: Layout.spacing.xs,
-    color: Colors.text.secondary,
+    color: Colors.lightTheme.text.secondary,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.neutral[300],
+    borderColor: Colors.lightTheme.neutral[300],
     borderRadius: Layout.borderRadius.md,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.lightTheme.background.primary,
   },
   input: {
     flex: 1,
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Layout.spacing.md,
     fontFamily: 'PlusJakartaSans-Regular',
     fontSize: 16,
-    color: Colors.text.primary,
+    color: Colors.lightTheme.text.primary,
   },
   multiline: {
     height: 100,
@@ -142,13 +140,13 @@ const styles = StyleSheet.create({
     paddingRight: Layout.spacing.md,
   },
   focused: {
-    borderColor: Colors.primary.default,
+    borderColor: Colors.lightTheme.primary.default,
   },
   error: {
-    borderColor: Colors.error.default,
+    borderColor: Colors.lightTheme.error.default,
   },
   errorText: {
-    color: Colors.error.default,
+    color: Colors.lightTheme.error.default,
     marginTop: Layout.spacing.xs,
   },
 });
