@@ -112,6 +112,7 @@ export default function MeditateScreen() {
               onFocus={handleFocus}
               onBlur={handleBlur}
               clearButtonMode="while-editing"
+              clearButtonMode="while-editing"
             />
           </Animated.View>
           <Animated.View style={filterStyle}>

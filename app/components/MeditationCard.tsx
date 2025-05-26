@@ -1,68 +1,45 @@
-// MeditationCard.tsx
-import { View, StyleSheet, ImageBackground, TouchableOpacity, Linking } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { TextSubheading, TextCaption } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import { themes } from '@/constants/Colours';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
-import Animated, { 
-  useAnimatedStyle, 
-  withTiming, 
-  useSharedValue, 
-  withSequence, 
-} from 'react-native-reanimated';
-import { router } from 'expo-router';
+import Animated, { useSharedValue, useAnimatedStyle, withSequence, withTiming } from 'react-native-reanimated';
+import { useRouter } from 'expo-router';
 
 interface MeditationCardProps {
   title: string;
   duration: string;
   imageUrl: string;
-  youtubeURL: string; 
+  youtubeURL: string;
 }
 
-
-export default function MeditationCard({ 
-  title, 
-  duration, 
-  imageUrl, 
-  youtubeURL 
-}: MeditationCardProps) {
+export default function MeditationCard({ title, duration, imageUrl, youtubeURL }: MeditationCardProps) {
   const scale = useSharedValue(1);
-
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const handlePress = () => {
     scale.value = withSequence(
       withTiming(0.98, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
-    
+
+    router.push({
+      pathname: '/components/screens/YouTubePlayerScreen',
+      params: { videoUrl: youtubeURL },
+    });
+
   };
 
-const handleAddvideo = () => {
-  handlePress();
-  router.push({
-    pathname: '/components/screens/YouTubePlayerScreen',
-    params: { videoUrl: youtubeURL },
-  });
-};
-
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
 
   return (
-    <TouchableOpacity onPress={handleAddvideo} activeOpacity={0.9}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
       <Animated.View style={[styles.card, animatedStyle]}>
-        <ImageBackground
-          source={{ uri: imageUrl }}
-          style={styles.imageBackground}
-          imageStyle={styles.image}
-        >
+        <ImageBackground source={{ uri: imageUrl }} style={styles.imageBackground} imageStyle={styles.image}>
           <View style={styles.overlay}>
             <View style={styles.content}>
               <TextSubheading style={styles.title}>{title}</TextSubheading>
@@ -81,15 +58,12 @@ const handleAddvideo = () => {
 const styles = StyleSheet.create({
   card: {
     height: 100,
-    width: 300,  
+    width: 300,
     borderRadius: Layout.borderRadius.lg,
     overflow: 'hidden',
     marginBottom: Layout.spacing.md,
     shadowColor: themes.light.textPrimary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
@@ -104,10 +78,10 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     padding: Layout.spacing.md,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     flexDirection: 'row',
     alignItems: 'flex-end',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
   },
   content: {
     flex: 1,
