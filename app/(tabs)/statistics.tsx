@@ -56,24 +56,7 @@ const Calendar = () => {
   }
 
   return (
-<<<<<<< HEAD
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ flex: 1, backgroundColor: themes.light.background }}>
-        {/* Moods */}
-        <TextTitle style={styles.statheader}>Recorded moods</TextTitle>
-        <Box style={styles.moodTrackerSection}>
-          <FlatList
-            data={moods}
-            renderItem={renderMoodItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
-          />
-        </Box>
-=======
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.background.primary }]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.background.secondary }]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
         <View style={{ paddingHorizontal: 20 }}>
           {/* Moods */}
@@ -89,7 +72,6 @@ const Calendar = () => {
               ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
             />
           </Box>
->>>>>>> c691a218c064ca1304b5a6e3292275c33ad1e2ad
 
           {/* Pie Chart */}
           <TextTitle style={styles.statheader}>Overall</TextTitle>
